@@ -1,10 +1,11 @@
 \documentclass[11pt,a4paper]{amsart}
 \usepackage[margin=30mm]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
-\usepackage{enumitem}
-\usepackage{booktabs,longtable}
+\usepackage{enumitem,booktabs,longtable}
 \usepackage[hidelinks]{hyperref}
 \usepackage{url}
+\makeatletter\g@addto@macro\UrlBreaks{\do\_\do\a\do\e\do\i\do\o\do\u}\makeatother
+\newcommand{\lean}[1]{\nolinkurl{#1}}
 
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -13,532 +14,443 @@
 \newcommand{\Zp}{\mathbb{Z}_p}
 \newcommand{\Fp}{\mathbb{F}_p}
 \newcommand{\Reg}{\mathrm{Reg}}
-\newcommand{\tors}{\mathrm{tors}}
-\newcommand{\vp}{v_p}
-\newcommand{\qp}{q_p}
-\newcommand{\Ebar}{\widetilde{E}}
+\newcommand{\Et}{\widetilde{E}}
 \newcommand{\Lam}{\Lambda}
-\makeatletter\g@addto@macro\UrlBreaks{\do\_\do\a\do\e\do\i\do\o\do\u}\makeatother
-\newcommand{\lean}[1]{\nolinkurl{#1}}
+\newcommand{\qp}{q_p}
 
 \theoremstyle{plain}
-\newtheorem*{mainthm}{Main Theorem}
-\newtheorem{thmx}{Theorem}
-\renewcommand{\thethmx}{\Alph{thmx}}
-\newtheorem{lemma}{Lemma}
-\newtheorem{proposition}[lemma]{Proposition}
-\newtheorem*{thmB}{Theorem B}
-\newtheorem*{thmC}{Theorem C}
-\newtheorem*{corD}{Corollary D}
-\newtheorem*{corE}{Corollary E}
-\newtheorem*{thmF}{Theorem F}
-\newtheorem*{corFp}{Corollary F$'$}
-\newtheorem*{thmH}{Theorem H}
-\newtheorem*{corHp}{Corollary H$'$}
-\newtheorem*{thmJ}{Theorem J}
-\newtheorem*{thmS}{Theorem S}
-\newtheorem*{thmR}{Theorem R}
-\newtheorem*{propRpp}{Proposition R$''$}
-\newtheorem*{corRp}{Corollary R$'$}
-\newtheorem*{thmRs}{Theorem R$_s$}
-\newtheorem*{corRps}{Corollary R$'_s$}
-\newtheorem*{propRpps}{Proposition R$''_s$}
-\newtheorem*{propRplus}{Proposition R$^+$}
-\newtheorem*{prop6}{Proposition 6}
-\newtheorem*{corG}{Corollary G}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem*{theoremA}{Theorem A}
+\newtheorem*{theoremB}{Theorem B}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}
-\newtheorem*{remark}{Remark}
+\newtheorem{remark}[theorem]{Remark}
 
 \begin{document}
 
-\title[Integrality of the $p$-adic height at anomalous primes]{Integrality of the $p$-adic height pairing at an anomalous prime\\ and points of order $p$ in $E(\Qp)$}
+\title[$p$-adic heights at anomalous primes]{The $p$-adic height pairing at anomalous primes and points of order $p$ over $\Qp$}
 \author{Yoshikazu Hosomura}
 \address{Independent researcher, Japan}
 \email{wvbks0@gmail.com}
-\date{\today}
-\subjclass[2020]{11G50, 11G07, 11S31 (primary); 11Y40, 68V20 (secondary)}
-\keywords{$p$-adic height, $p$-adic regulator, anomalous prime, local torsion, division polynomial, Fermat quotient, Lean 4}
+\subjclass[2020]{Primary 11G50; Secondary 11G07, 11S31, 11Y40}
+\keywords{$p$-adic height, $p$-adic regulator, anomalous prime, local torsion, division polynomial, Fermat quotient}
 
 \begin{abstract}
-Let $E/\Q$ be an elliptic curve and $p\ge 5$ a prime of good ordinary reduction. The cyclotomic $p$-adic regulator $\Reg_p$ is in general not $p$-integral when $p$ is \emph{anomalous}, $\#\Ebar(\Fp)=p$; counting indices gives the elementary bound $\vp(\Reg_p)\ge r-2$, and computations of $p$-adic heights have usually excluded such primes. We show that the deficit is governed by a single local condition. If $p\nmid\prod_\ell c_\ell$ and $E(\Q)/\tors$ surjects onto $\Ebar(\Fp)$, then \emph{every entry of the height matrix is $p$-integral if and only if $E(\Qp)$ contains a point of order $p$}; in rank one $\vp(\Reg_p)\ge0$ exactly in that case, and otherwise $\vp(\Reg_p)=-1$. Modulo $p$ the height matrix has rank exactly one in the non-split case and rank at most two in the split case, its constant being a Fermat quotient, respectively a second-order Fermat quotient, of the $p$-th division polynomial at one point. Since points of order $p$ in $E(\Qp)$ are rare by a theorem of David and Weston, the non-split behaviour is the generic one at anomalous primes of non-CM curves, while CM curves are split at every anomalous prime; in particular the result applies at the anomalous primes excluded in recent work on rank-two CM curves. The arithmetic steps of the proofs have been formalised in Lean~4.
+Let $E/\Q$ be an elliptic curve and let $p\ge5$ be a prime of good ordinary reduction with $\#\Et(\Fp)=p$. At such an anomalous prime the cyclotomic $p$-adic regulator need not be $p$-integral, and the standard index count only gives $v_p(\Reg_p)\ge r-2$. Assume that $p$ does not divide the Tamagawa product and that $E(\Q)$ surjects onto $\Et(\Fp)$. We prove that all entries of the $p$-adic height matrix lie in $\Zp$ if and only if $E(\Qp)$ has a point of order $p$. In rank one, $v_p(\Reg_p)=-1$ when there is no such point. We also determine the height matrix modulo $p$: in the non-split case $p$ times the matrix reduces to a rank-one form whose constant is a Fermat quotient of the $p$-th division polynomial, and in the split case the matrix itself reduces to a form of rank at most two whose diagonal constant is a second-order Fermat quotient. Since CM curves are split at every anomalous prime, the results apply in particular to the anomalous primes excluded in recent work on rank-two CM curves. The arithmetic part of the proofs is formalised in Lean~4.
 \end{abstract}
 
 \maketitle
 
-\section{Introduction}\label{sec:intro}
+\section{Introduction}
 
-\subsection{The question}
-Let $E/\Q$ be an elliptic curve given by a global minimal Weierstrass equation, $p\ge5$ a prime of good ordinary reduction, and $\Lam:=E(\Q)/\tors$, of rank $r$. The cyclotomic $p$-adic height of Mazur--Tate and Schneider \cite{MT91,Sch85} is a quadratic form $h_p$ on $\Lam$ with values in $\Qp$; its discriminant $\Reg_p$ on a basis of $\Lam$ is the regulator in the $p$-adic analogue of the conjecture of Birch and Swinnerton-Dyer \cite{MTT,BMS}. Unlike the archimedean regulator, $\Reg_p$ is not known to be non-zero (Schneider's conjecture), and we say nothing about that question. This paper concerns a coarser invariant: the valuation $\vp(\Reg_p)$, and more precisely the $p$-integrality of the individual entries of the height matrix.
+Let $E/\Q$ be an elliptic curve, $p\ge5$ a prime of good ordinary reduction, and $\Lam=E(\Q)/E(\Q)_{\mathrm{tors}}$, of rank $r$. The cyclotomic $p$-adic height of Mazur--Tate and Schneider \cite{MT91,Sch85} is a $\Qp$-valued quadratic form $h_p$ on $\Lam$, and its discriminant $\Reg_p$ is the regulator in the $p$-adic Birch--Swinnerton-Dyer conjecture \cite{MTT,BMS}. This paper is about the $p$-adic valuation of $\Reg_p$ and of the individual entries of the height matrix.
 
-When $p$ is \emph{anomalous} in the sense of Mazur \cite{Maz72}, i.e.\ $p\mid\#\Ebar(\Fp)$ (for $p\ge7$ this means $a_p=1$, $\#\Ebar(\Fp)=p$), the regulator need not be $p$-integral. Negative valuations are visible in the tables of Mazur, Stein and Tate \cite[\S\S4.2--4.6]{MST}, where the anomalous primes are noted, and the loss of precision they cause is familiar to anyone computing $p$-adic heights \cite{Har}. A simple count of indices explains the size of the deficit: $\vp(\Reg_p)\ge r-2$ (Theorem~\ref{thm:A} below), a bound which is elementary and which we do not claim. Work that relies on integrality therefore excludes anomalous primes. Balakrishnan, \c{C}iperiani and Stein restrict to ordinary non-anomalous primes not dividing the Tamagawa product, where the $p$-adic height pairing is integral \cite{BCS}; examples at anomalous primes are discussed separately by Stein and Wuthrich \cite{SW}; and in the recent work of Banwait \cite{Ban} on the Shafarevich--Tate group of rank-two CM elliptic curves, anomalous primes form one of the classes excluded throughout, non-anomalousness being what extends a regulator estimate from $E^0(\Q)$ to $E(\Q)$ \cite[\S2.2]{Ban}.
+The prime $p$ is \emph{anomalous} if $p\mid\#\Et(\Fp)$ \cite{Maz72}; for $p\ge7$ this means $\#\Et(\Fp)=p$. At an anomalous prime the regulator can fail to be $p$-integral. Negative valuations occur in the tables of Mazur, Stein and Tate \cite[\S4]{MST}, and the elementary index count of Theorem~\ref{thm:baseline} explains their size: $v_p(\Reg_p)\ge r-2$. For this reason anomalous primes are often excluded. Balakrishnan, \c{C}iperiani and Stein work at non-anomalous primes, where the height pairing is integral \cite{BCS}, and Banwait excludes anomalous primes in his criterion for the Shafarevich--Tate group of rank-two CM curves \cite{Ban}. We describe what happens at these primes.
 
-The purpose of this paper is to describe exactly what happens at the excluded primes, and thereby to complement such work.
+We say that $E$ is \emph{split at $p$} if $E(\Qp)[p]\ne0$. When $p$ is anomalous, this holds exactly when the reduction sequence $0\to E_1(\Qp)\to E(\Qp)\to\Et(\Fp)\to0$ splits. Let $c_\ell$ be the Tamagawa numbers, $n=\prod_\ell c_\ell$, and let ($\iota$) be the hypothesis that $\Lam\to\Et(\Fp)$ is surjective.
 
-\subsection{Results}
-Call $E$ \emph{split at $p$} when $E(\Qp)[p]\ne0$; for an anomalous prime this says that the reduction sequence $0\to E_1(\Qp)\to E(\Qp)\to\Ebar(\Fp)\to0$ splits. Write $c_\ell$ for the Tamagawa numbers and let $\iota$ denote the hypothesis that the reduction map $\Lam\to\Ebar(\Fp)$ is onto.
-
-\begin{mainthm}[Theorem~\ref{thm:main}]
-Suppose $\#\Ebar(\Fp)=p$, $p\nmid\prod_\ell c_\ell$ and $\iota$. Let $M_\Lam$ be the height matrix on a basis of $\Lam$.
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item Every entry of $M_\Lam$ lies in $\Zp$ if and only if $E(\Qp)[p]\ne0$.
-\item If $r=1$, then $\vp(\Reg_p)\ge0$ if and only if $E(\Qp)[p]\ne0$; in the non-split case $\vp(\Reg_p)=-1$ exactly.
-\item If $E(\Qp)[p]\ne0$, then $\vp(\Reg_p)\ge\max(r-2,0)$ in every rank.
+\begin{theoremA}
+Assume $\#\Et(\Fp)=p$, $p\nmid n$ and \textup{($\iota$)}. Let $M$ be the height matrix of $h_p$ on a basis of $\Lam$.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item All entries of $M$ lie in $\Zp$ if and only if $E(\Qp)[p]\ne0$.
+\item If $r=1$, then $v_p(\Reg_p)\ge0$ if $E$ is split at $p$, and $v_p(\Reg_p)=-1$ otherwise.
+\item If $E$ is split at $p$, then $v_p(\Reg_p)\ge\max(r-2,0)$.
 \end{enumerate}
-\end{mainthm}
+\end{theoremA}
 
-The statement about the \emph{entries} in (i) is not implied by any bound on the determinant and holds in every rank. The bound on the determinant improves on the elementary one in rank one only, where (ii) says exactly which curves have a non-integral regulator.
+Part (1) concerns the entries of $M$, and does not follow from any bound on $\det M$; it holds in every rank. The bound on $\det M$ in (3) is new only for $r=1$, where (2) identifies the curves with non-integral regulator.
 
-The same mechanism determines the whole height matrix modulo $p$ (Section~\ref{sec:modp}). In the non-split case $p\,M_\Lam$ is integral and $p\,M_\Lam\bmod p=c\,\chi\chi^{t}$ is of rank exactly one, $\chi$ being the reduction character and $c=2\lambda_1$ a Fermat quotient of the $p$-th division polynomial at one point (Theorem~R, Proposition~R$''$). In the split case $M_\Lam\bmod p$ vanishes on $\ker\chi$ and has rank at most two, and its diagonal constant is a second-order Fermat quotient of the same polynomial (Theorem~R$_s$, Proposition~R$''_s$). In both cases $\vp(\Reg_p)=(r-2)+\vp(\det T)$ for an integral Schur complement $T$ (Corollaries~R$'$, R$'_s$).
+\begin{theoremB}
+Under the hypotheses of Theorem~A let $\chi\colon\Lam\to\Fp$ be the discrete logarithm of the reduction map.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item If $E$ is not split at $p$, then $pM$ is integral and $pM\equiv2\lambda_1\,\chi\chi^{t}\pmod p$ with $\lambda_1\in\Fp^\times$; in particular $pM\bmod p$ has rank one.
+\item If $E$ is split at $p$, then $M\bmod p$ vanishes on $\ker\chi\times\ker\chi$, so its rank is at most two.
+\end{enumerate}
+In both cases $v_p(\Reg_p)=(r-2)+v_p(\det T)$ for an integral Schur complement $T$.
+\end{theoremB}
 
-\subsection{The mechanism}
-The proof is local and runs through one element of $\Fp$. For a point $P'\in E(\Q)$ whose reduction has exact order $p$, let $\phi_p$ be the $p$-th division polynomial and put
+Here $\lambda_1$ is half the Fermat quotient of $\phi_p(x(P))$ for a point $P$ whose reduction generates $\Et(\Fp)$, where $\phi_p$ is the $p$-th division polynomial. In the split case the diagonal constant is a second-order Fermat quotient of the same polynomial (Proposition~\ref{prop:Rs-const}).
+
+\subsection*{The mechanism}
+For $P'\in E(\Q)$ whose reduction has order $p$, put
 \[
-\lambda:=\tfrac12\,\qp\bigl(\phi_p(x(P'))\bigr)\in\Fp,\qquad \qp(u):=\frac{u^{p-1}-1}{p}\bmod p .
+\lambda=\tfrac12\,\qp\bigl(\phi_p(x(P'))\bigr)\in\Fp,\qquad \qp(u)=\frac{u^{p-1}-1}{p}\bmod p .
 \]
-Writing the height of $pP'$ as a formal-group part plus $2\log_p$ of a ratio of coordinates (Lemma~\ref{lem:decomp}), the second $p$-adic digit of the height is $-\lambda$ (Theorem~B). In the split case $\lambda$ vanishes because Vélu's factorisation of multiplication by $p$ through a rational subgroup of order $p$ turns $\phi_p(x(T))$ into a $p$-th power (Theorem~C, Corollary~D). Conversely $\lambda=0$ forces splitting (Proposition~6). The latter equivalence is a known criterion for local torsion: it is the case $n=1$ of Gross's tameness criterion \cite{Gro90} (as quoted in \cite[Thm.~4.1]{LR}), and it is contained in the work of David and Weston on local torsion primes \cite[Lemma~3.2]{DW} and of Ozeki and Yoshida \cite[Lemma~4.1]{OY}, in the form ``$E$ is split at $p$ if and only if $E\bmod p^2$ is the canonical lift of $\Ebar$''. What we add is its presentation as the vanishing of a Fermat quotient of $\phi_p$ at a single point, which is what connects it to the height, together with an independent proof (Appendix~\ref{app:prop6}).
+The height of $pP'$ splits into a formal-group term and $2\log_p$ of a ratio of coordinates (Lemma~\ref{lem:decomp}), and the second $p$-adic digit of the latter is $-\lambda$ (Theorem~\ref{thm:criterion}). If $E$ is split at $p$, Vélu's factorisation of $[p]$ through a rational subgroup of order $p$ makes $\phi_p(x(T))$ a $p$-th power, so $\lambda=0$ (Corollary~\ref{cor:split-lambda}). Conversely, $\lambda=0$ implies that $E$ is split at $p$ (Proposition~\ref{prop:criterion}). In the form ``$E$ is split at $p$ if and only if $E\bmod p^2$ is the canonical lift'', this equivalence is due to Gross \cite{Gro90} (see \cite[Thm.~4.1]{LR}), David--Weston \cite[Lemma~3.2]{DW} and Ozeki--Yoshida \cite[Lemma~4.1]{OY}. The new ingredient is its formulation through the Fermat quotient of $\phi_p$ at one point, which is what links it to the height. We give a proof in this form in Appendix~\ref{app:criterion}.
 
-\subsection{How often each case occurs}
-By a theorem of David and Weston, an elliptic curve over $\Q$ has, on average, only finitely many primes $p$ with $E(\Qp)[p]\ne0$ \cite{DW}; for non-CM curves the anomalous primes themselves have density zero. Thus, for a non-CM curve, the anomalous primes at which the Main Theorem applies are, apart from finitely many on average, in the non-split case, where in rank one $\vp(\Reg_p)=-1$ exactly. For CM curves the opposite holds: a CM curve is split at every anomalous prime of good ordinary reduction (\cite[Prop.~2.1(3)]{DW}; Theorem~F below), so a CM curve never shows the deficit (Corollary~F$'$). In particular, for the rank-two CM curves studied in \cite{Ban}, at an anomalous prime satisfying the hypotheses above the regulator is integral, and Corollary~R$'_s$ says that it is a unit exactly when the height matrix modulo $p$ has rank two (Corollary~G in Section~\ref{sec:CM}). We do not extend the criterion of \cite{Ban} to anomalous primes, which would require in addition the anomalous Euler factor of the $p$-adic $L$-function; we only describe the regulator there.
+\subsection*{Frequency}
+David and Weston showed that an elliptic curve over $\Q$ has, on average, only finitely many primes $p$ with $E(\Qp)[p]\ne0$ \cite{DW}. For a non-CM curve, therefore, the anomalous primes covered by Theorem~A are almost all non-split, and in rank one the regulator has valuation exactly $-1$ there. A CM curve, on the other hand, is split at every anomalous prime of good ordinary reduction \cite[Prop.~2.1(3)]{DW}. For the rank-two CM curves of \cite{Ban} this gives Corollary~\ref{cor:CM-rank2}: at an anomalous prime satisfying our hypotheses the regulator is integral, and it is a unit exactly when $M\bmod p$ has rank two.
 
-\subsection{Formalisation and computations}
-The arithmetic steps of the proofs --- the Fermat-quotient bookkeeping, the determinant estimates, the bilinear algebra behind Theorems~R and R$_s$, and the weight and residue counts of Appendix~\ref{app:prop6} --- have been formalised in Lean~4 with Mathlib, with no \texttt{sorry}, no \texttt{native\_decide}, and axioms among \texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}. The geometric inputs (the $p$-adic sigma function, division polynomials, Vélu's formulas, formal groups, the Tate curve) are not in Mathlib and enter the Lean statements as hypotheses; Appendix~\ref{app:lean} lists the correspondence. The statements were also checked numerically with PARI/GP on curves from Cremona's tables; these checks are reported only where they illustrate a statement.
+\subsection*{Formalisation}
+The arithmetic steps of the proofs are formalised in Lean~4 with Mathlib, with no \texttt{sorry} or \texttt{native\_decide}; the geometric and $p$-adic analytic inputs, which are not available in Mathlib, enter the Lean statements as hypotheses. Appendix~\ref{app:lean} gives the correspondence.
 
-\subsection*{Organisation}
-Section~\ref{sec:setting} fixes the normalisation. Section~\ref{sec:baseline} gives the elementary baseline and the decomposition of the height. Section~\ref{sec:criterion} proves the criterion through $\lambda$, Section~\ref{sec:main} the Main Theorem, Section~\ref{sec:modp} the structure modulo $p$, and Section~\ref{sec:CM} the CM case and the relation with \cite{Ban}. Section~\ref{sec:related} discusses related work. Appendix~\ref{app:prop6} contains the proof of Proposition~6 and Appendix~\ref{app:lean} the Lean correspondence.
+\subsection*{Earlier version and companion paper}
+This paper revises and shortens the first part of a draft that the author posted under the pen name Kiichi \cite{Draft}. The split case is studied further in the companion paper \cite{Comp}.
 
-\subsection*{Relation to an earlier version}
-This paper is a revised and condensed version of the first part of a longer draft that the author published under the pen name \emph{Kiichi} on the website \emph{computo ergo sum} and deposited on Zenodo \cite{Draft}. The remaining parts of that draft (the higher $p$-adic digits of the height and an archimedean threshold) are treated in a companion paper \cite{Companion}.
+\section{Notation and normalisation}\label{sec:notation}
 
-\section{Setting and normalisation}\label{sec:setting}
-
-Throughout, $E/\Q$ is given by a global minimal Weierstrass equation with coefficients $a_1,\dots,a_6$, and $p\ge5$ is a prime of good ordinary reduction. For $P\in E(\Q)$, $P\ne O$, we write
+We fix a global minimal Weierstrass equation for $E$ with coefficients $a_1,\dots,a_6$. For $P\in E(\Q)\smallsetminus\{O\}$ write
 \[
-P=\bigl(\alpha(P)/d(P)^2,\ \beta(P)/d(P)^3\bigr),\qquad \gcd(\alpha,d)=\gcd(\beta,d)=1,\ d\ge1 .
+P=\bigl(\alpha/d^2,\ \beta/d^3\bigr),\qquad \alpha,\beta,d\in\Z,\ d\ge1,\ \gcd(\alpha,d)=\gcd(\beta,d)=1 .
 \]
-Let $t=-x/y$ be the parameter of the formal group $\widehat E$ and $E_n(\Qp):=\{P:\vp(t(P))\ge n\}$. The valuation $\vp$ is normalised by $\vp(p)=1$; $\log_p$ is the Iwasawa logarithm with $\log_p(p)=0$. For $u\in\Zp^\times$ the Fermat quotient $\qp(u)$ is defined as above; $\qp\colon\Zp^\times\to\Fp$ is a surjective homomorphism and
-\begin{equation}\label{eq:logq}
-\vp(\log_p u)=1+\vp(\qp(u)),\qquad \log_p u\equiv -p\,\qp(u)\pmod{p^2}.
+Let $t=-x/y$ be the parameter of the formal group and $E_k(\Qp)=\{P: v_p(t(P))\ge k\}$. The logarithm $\log_p$ is Iwasawa's, with $\log_p p=0$. The Fermat quotient $\qp\colon\Zp^\times\to\Fp$ is a surjective homomorphism, and
+\begin{equation}\label{eq:log-fermat}
+\log_p u\equiv-p\,\qp(u)\pmod{p^2},\qquad v_p(\log_pu)=1+v_p(\qp(u))\qquad(u\in\Zp^\times).
 \end{equation}
-So ``the second $p$-adic digit of $\log_p u$'' and ``the Fermat quotient of $u$'' are the same datum.
 
 \subsection*{The height}
-Let $\sigma_p\in t\Zp[[t]]$ be the Mazur--Tate $p$-adic sigma function \cite{MT91}, the unique odd series $\sigma(t)=t+c_2t^2+\cdots$ with $p$-integral coefficients solving the differential equation of \cite{MT91}; here $c_2=a_1/2$. Following \cite[\S2.2]{Har}, if $P\in E(\Q)$ satisfies
+Let $\sigma_p(t)=t+c_2t^2+\cdots\in t\Zp[[t]]$ be the Mazur--Tate sigma function \cite{MT91}; it is odd in the formal logarithm, and $c_2=a_1/2$. Following \cite[\S2.2]{Har}, for $P$ such that
 \begin{itemize}
-\item[(A1)] $P$ reduces to $O$ at $p$, and
-\item[(A2)] $P$ reduces to a non-singular point at every bad prime,
+\item[(A1)] $P$ reduces to $O$ modulo $p$, and
+\item[(A2)] $P$ has non-singular reduction at every bad prime,
 \end{itemize}
-we put $h_p(P):=2\log_p\bigl(\sigma_p(P)/d(P)\bigr)$, and extend to all of $E(\Q)$ by $h_p(Q):=h_p(mQ)/m^2$ for any $m\ge1$ with $mQ$ satisfying (A1) and (A2). This is $2p$ times the normalisation of \cite{MST}, so the two valuations of $\Reg_p$ differ by $r$; it is the normalisation used in \cite{Har}. The associated pairing is $h_p(P,R):=\tfrac12\bigl(h_p(P+R)-h_p(P)-h_p(R)\bigr)$ and $\Reg_p:=\det\bigl(h_p(P_i,P_j)\bigr)$ for a basis $(P_i)$ of $\Lam$. Valuations of heights and of $\Reg_p$ do not depend on the sign convention; with this normalisation $h_p$ is the negative of PARI's canonical $p$-adic height.
-
-\subsection*{Anomalous, split, $\iota$}
-The prime $p$ is \emph{anomalous} if $p\mid\#\Ebar(\Fp)$. By Hasse's bound $\#\Ebar(\Fp)\in\{p,2p\}$ in that case, and $2p$ occurs only for $p=5$ (see Proposition~R$^+$). From Section~\ref{sec:criterion} on we assume $\#\Ebar(\Fp)=p$. The curve is \emph{split at $p$} if $E(\Qp)[p]\ne0$. The hypothesis $\iota$ says that $\Lam\to\Ebar(\Fp)$ is onto. We write $\Lam_0:=\ker(\Lam\to\Ebar(\Fp))$ and $n:=\prod_\ell c_\ell$.
+put $h_p(P)=2\log_p(\sigma_p(P)/d(P))$, and extend by $h_p(Q)=h_p(mQ)/m^2$. This is $2p$ times the normalisation of \cite{MST}, so the two valuations of $\Reg_p$ differ by $r$. Put $h_p(P,R)=\frac12(h_p(P+R)-h_p(P)-h_p(R))$ and $\Reg_p=\det(h_p(P_i,P_j))$ for a basis $(P_i)$ of $\Lam$.
 
 \subsection*{Division polynomials}
-$\phi_m,\psi_m,\omega_m$ are normalised by $x(mQ)=\phi_m/\psi_m^2$, $y(mQ)=\omega_m/\psi_m^3$, with $\phi_m$ monic of degree $m^2$ in $x$. Modulo $p$ and for $E$ ordinary, $\phi_p(x)\equiv f(x^p)$ for a polynomial $f$, because $[p]$ factors through Frobenius in characteristic $p$.
+Write $x(mQ)=\phi_m/\psi_m^2$ and $y(mQ)=\omega_m/\psi_m^3$, with $\phi_m$ monic of degree $m^2$ in $x$. In characteristic $p$ the map $[p]$ factors through Frobenius, so $\phi_p\equiv f(x^p)\pmod p$ for some polynomial $f$.
 
-\subsection*{The model}
-The height and its valuation are invariants of $E/\Q$, but the two parts of the decomposition in Lemma~\ref{lem:decomp} depend on the Weierstrass model. The substitution $(x,y)\mapsto(x,y+sx)$ with $s\in\Z$ carries a global minimal equation to a global minimal one, fixes $x$, $\alpha$, $d$, $\phi_p$, $\psi_p$ and $\lambda$, and changes $a_1$ to $a_1+2s$. Since $p$ is odd we may and do choose $p\mid a_1$ whenever it is convenient; statements about the individual parts refer to such a model.
+\subsection*{Choice of model}
+The substitution $(x,y)\mapsto(x,y+sx)$, $s\in\Z$, preserves global minimality, changes $a_1$ to $a_1+2s$, and leaves $x$, $\alpha$, $d$, $\phi_p$ and $\psi_p$ unchanged. As $p$ is odd we may take $p\mid a_1$. Heights and their valuations do not depend on this choice; the two summands of Lemma~\ref{lem:decomp} do.
 
-\section{The baseline and the decomposition of the height}\label{sec:baseline}
+\subsection*{Standing notation}
+$\Lam_0=\ker(\Lam\to\Et(\Fp))$, $n=\prod_\ell c_\ell$, and ($\iota$) is the surjectivity of $\Lam\to\Et(\Fp)$. From Section~\ref{sec:criterion} on we assume $\#\Et(\Fp)=p$.
 
-\begin{thmx}[the baseline]\label{thm:A}
-Let $G:=\{P\in E(\Q): P \text{ satisfies (A1) and (A2)}\}$ and $k:=[\Lam:\mathrm{image}\ \mathrm{of}\ G]$. Then $\vp(\Reg_p)\ge r-2\vp(k)$. If moreover $p\nmid n$, then $\vp(k)\le1$, with equality exactly when the image of $\Lam$ in $\Ebar(\Fp)$ meets $\Ebar(\Fp)[p]\ne0$. In particular $\vp(\Reg_p)\ge r-2$ in that case and $\vp(\Reg_p)\ge r$ otherwise.
-\end{thmx}
+\section{The index bound and a decomposition of the height}\label{sec:baseline}
 
-This bound is elementary and known to practitioners (see Section~\ref{sec:related}); we include the proof because the rest of the paper is measured against it.
-
-\begin{lemma}\label{lem:unit}
-If $P$ satisfies \textup{(A1)} and \textup{(A2)} and $e:=\vp(t(P))\ge1$, then $\sigma_p(P)/d(P)\in\Zp^\times$, $h_p(P)\in 2p\Zp$, and $\vp(h_p(P))=1+\vp\bigl(\qp(\sigma_p(P)/d(P))\bigr)$.
+\begin{lemma}\label{lem:A1A2}
+Let $P$ satisfy \textup{(A1)} and \textup{(A2)}, and $e=v_p(t(P))\ge1$. Then $\sigma_p(P)/d(P)\in\Zp^\times$, $h_p(P)\in2p\Zp$, and $v_p(h_p(P))=1+v_p(\qp(\sigma_p(P)/d(P)))$.
 \end{lemma}
 
 \begin{proof}
-Since $\sigma_p(t)/t\in1+t\Zp[[t]]$, $\vp(\sigma_p(P))=e$. From $\vp(x(P))=-2e$ and $\gcd(\alpha,d)=1$ we get $\vp(d)=e$ and $\vp(\alpha)=0$, hence $\sigma_p(P)/d(P)\in\Zp^\times$. The remaining assertions are \eqref{eq:logq}.
+We have $v_p(\sigma_p(t))=e$. Since $v_p(x(P))=-2e$ and $\gcd(\alpha,d)=1$, $v_p(d)=e$ and $v_p(\alpha)=0$. The rest is \eqref{eq:log-fermat}.
 \end{proof}
 
-\begin{lemma}[decomposition]\label{lem:decomp}
-Let $P$ satisfy \textup{(A1)}, \textup{(A2)} and $e=\vp(t(P))$. Put $u(P):=\sigma_p(t)/t\in1+p^e\Zp$ and $n_\ell(P):=v_\ell(\alpha)-v_\ell(\beta)\in\Z$ for primes $\ell\ne p$. Then
+\begin{theorem}\label{thm:baseline}
+Let $k$ be the index in $\Lam$ of the image of the group of points satisfying \textup{(A1)} and \textup{(A2)}. Then $v_p(\Reg_p)\ge r-2v_p(k)$. If $p\nmid n$, then $v_p(k)\le1$, with equality if and only if the image of $\Lam$ in $\Et(\Fp)$ contains a point of order $p$.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:A1A2} the height matrix on a basis of that subgroup has entries in $p\Zp$, so its determinant has valuation at least $r$; this determinant is $k^2\Reg_p$. The quotient of $\Lam$ by the subgroup embeds in $\Et(\Fp)\times\prod_\ell\Phi_\ell(\F_\ell)$; if $p\nmid n$, its $p$-part comes from $\Et(\Fp)$, whose $p$-part is cyclic of order at most $p$ by the Hasse bound.
+\end{proof}
+
+This bound is well known in practice (see Section~\ref{sec:related}); we use it only as a point of comparison.
+
+\begin{lemma}\label{lem:decomp}
+Let $P$ satisfy \textup{(A1)}, \textup{(A2)} and $e=v_p(t(P))$. Then
 \[
-h_p(P)=2\Lambda_\sigma+2A,\qquad \Lambda_\sigma:=\log_p u(P),\quad A:=\log_p\bigl(\alpha(P)/\beta(P)\bigr)=\sum_{\ell\ne p}n_\ell(P)\log_p\ell .
+h_p(P)=2\Lambda_\sigma+2A,\qquad \Lambda_\sigma=\log_p\frac{\sigma_p(t)}{t},\qquad A=\log_p\frac{\alpha}{\beta}=\sum_{\ell\ne p}(v_\ell(\alpha)-v_\ell(\beta))\log_p\ell .
 \]
-With $b:=\vp(\Lambda_\sigma)$ and $c:=\vp(A)$ one has $c\ge1$, $b\ge e$, and $b\ge\min(e+\vp(a_1),\,2e)$. In particular, in a model with $p\mid a_1$, $b\ge2$ when $e=1$ and $b\ge3$ when $e\ge2$.
+Put $b=v_p(\Lambda_\sigma)$ and $c=v_p(A)$. Then $c\ge1$ and $b\ge\min(e+v_p(a_1),2e)$. In a model with $p\mid a_1$ this gives $b\ge2$ for $e=1$ and $b\ge3$ for $e\ge2$.
 \end{lemma}
 
 \begin{proof}
-From $t=-x/y$, $x=\alpha/d^2$, $y=\beta/d^3$ we get $t/d=-\alpha/\beta$, hence $\sigma_p(P)/d(P)=u(P)\cdot(-\alpha/\beta)$. Taking $\log_p$ and using $\log_p(-1)=0$ gives the decomposition; $\alpha$ and $\beta$ are prime to $p$ by Lemma~\ref{lem:unit}, so $A$ is a $\Z$-combination of $\log_p\ell$ with $\ell$ a $p$-adic unit, and $c\ge1$ by \eqref{eq:logq}. Finally $u=1+c_2t+O(t^2)$ with $c_2=a_1/2$ and $p$-integral higher coefficients, so $\vp(u-1)\ge\min(e+\vp(a_1),2e)$, and $\vp(\log_p u)=\vp(u-1)$ since $p\ge3$.
+Since $t/d=-\alpha/\beta$, we have $\sigma_p(P)/d=(\sigma_p(t)/t)\cdot(-\alpha/\beta)$, and $\log_p(-1)=0$. By Lemma~\ref{lem:A1A2}, $\alpha$ and $\beta$ are prime to $p$, so $c\ge1$ by \eqref{eq:log-fermat}. Finally $\sigma_p(t)/t=1+\frac{a_1}2t+O(t^2)$ with integral coefficients.
 \end{proof}
 
-\begin{proof}[Proof of Theorem~\ref{thm:A}]
-If $P,R,P+R\in G$, Lemma~\ref{lem:unit} puts the three heights in $2p\Zp$, so $h_p(P,R)\in p\Zp$ as $p$ is odd. The height matrix on a basis of the image of $G$ therefore has entries in $p\Zp$ and its determinant has valuation $\ge r$. A change of basis from $\Lam$ to the image of $G$ has determinant $\pm k$, so this determinant is $k^2\Reg_p$, which gives the first bound. The quotient of $\Lam$ by the image of $G$ embeds into $\Ebar(\Fp)\times\prod_\ell\Phi_\ell(\F_\ell)$; if $p\nmid n$ its $p$-part comes from $\Ebar(\Fp)$, whose $p$-part is cyclic of order at most $p$ by Hasse's bound.
-\end{proof}
+\section{The criterion}\label{sec:criterion}
 
-\section{The criterion: one element of \texorpdfstring{$\Fp$}{Fp}}\label{sec:criterion}
+In this section $\#\Et(\Fp)=p$. Let $P'\in E(\Q)$ satisfy \textup{(A2)} and have reduction of order $p$, and put $P=pP'$ and $e=v_p(t(P))$.
 
-From now on $\#\Ebar(\Fp)=p$. Let $P'\in E(\Q)$ have reduction of exact order $p$ and satisfy (A2), put $P:=pP'$ and $e:=\vp(d(P))=\vp(t(P))\ge1$.
-
-\begin{lemma}[splitting and depth]\label{lem:depth}
+\begin{lemma}\label{lem:depth}
 $E(\Qp)[p]\ne0$ if and only if $e\ge2$.
 \end{lemma}
 
 \begin{proof}
-Suppose $\tau\in E(\Qp)$ has order $p$. For $p\ge5$ the formal group $\widehat E(p\Zp)$ is torsion-free, so $\tau$ does not reduce to $O$, and since $\#\Ebar(\Fp)=p$ its reduction generates $\Ebar(\Fp)$. Hence $R:=P'-j\tau\in E_1(\Qp)$ for some $j$, and $pP'=pR$. As $[p](t)=pt+(\text{terms of degree}\ge2)$ with $\Zp$-coefficients, $\vp([p](t))\ge\min(1+\vp(t),2\vp(t))\ge2$ for $\vp(t)\ge1$, so $e\ge2$.
+Suppose $\tau\in E(\Qp)$ has order $p$. As $\widehat E(p\Zp)$ is torsion-free for $p\ge5$, the reduction of $\tau$ is non-zero and generates $\Et(\Fp)$. So $R=P'-j\tau\in E_1(\Qp)$ for some $j$, and $P=pR$. Since $[p](t)=pt+O(t^2)$ with integral coefficients, $v_p(t(pR))\ge2$.
 
-Conversely suppose $E(\Qp)[p]=0$. Then $E(\Qp)$ is torsion-free (its prime-to-$p$ torsion injects into $\Ebar(\Fp)$, of order $p$), so it is a torsion-free compact $p$-adic Lie group of dimension one with $E_1(\Qp)$ of index $p$; hence $E(\Qp)\cong\Zp$ and $E_1(\Qp)=pE(\Qp)$. The formal logarithm $\log_E\colon E_1(\Qp)\to p\Zp$ is an isomorphism for $p\ge5$, and $\ell(Q):=\log_E(pQ)/p$ extends it to an injective homomorphism $E(\Qp)\to\Zp$ with $\ell(E(\Qp))=\Zp$ and $\ell(E_1(\Qp))=p\Zp$. As $P'\notin E_1(\Qp)$, $\ell(P')\in\Zp^\times$, so $\vp(\log_E(pP'))=1$ and $e=1$.
+Suppose $E(\Qp)[p]=0$. Then $E(\Qp)$ is torsion-free, so $E(\Qp)\cong\Zp$ and $E_1(\Qp)=pE(\Qp)$. The map $Q\mapsto\log_E(pQ)/p$ is an isomorphism $E(\Qp)\to\Zp$ carrying $E_1(\Qp)$ onto $p\Zp$. As $P'\notin E_1(\Qp)$, $v_p(\log_E(pP'))=1$, hence $e=1$.
 \end{proof}
 
-\begin{lemma}[$\lambda$ is local]\label{lem:local}
-$\phi_p$ modulo $p$ is a polynomial in $x^p$, so $\phi_p(x)\bmod p^2$ depends only on $x\bmod p$. Consequently
+\begin{lemma}\label{lem:lambda-local}
+$\phi_p(x)\bmod p^2$ depends only on $x\bmod p$. Hence
 \[
-\lambda:=\tfrac12\,\qp\bigl(\phi_p(x(P'))\bigr)\in\Fp
+\lambda(\bar x)=\tfrac12\,\qp\bigl(\phi_p(x(P'))\bigr)
 \]
-is a function $\lambda(\bar x)$ of the reduction of $E$ modulo $p^2$ and of the class $\bar x$ of $x(P')$ in $\Ebar(\Fp)\smallsetminus\{O\}$ alone.
+depends only on $E\bmod p^2$ and on the class $\bar x\in\Et(\Fp)\smallsetminus\{O\}$ of $P'$.
 \end{lemma}
 
 \begin{proof}
-In characteristic $p$, $[p]=V\circ F$, so $x\circ[p]$ is a rational function of $x^p$ and $\phi_p'\equiv0\pmod p$. For a polynomial $g$ with $p\mid g'(x)$, Taylor's formula gives $p^2\mid g(x+pk)-g(x)$ for $x,k\in\Zp$. That $\phi_p(x(P'))$ is a unit is shown in the proof of Theorem~B.
+Since $\phi_p\equiv f(x^p)$, we have $p\mid\phi_p'$, and then $p^2\mid\phi_p(x+pk)-\phi_p(x)$. The value $\phi_p(x(P'))$ is a unit by the proof of Theorem~\ref{thm:criterion}.
 \end{proof}
 
-\begin{thmB}[criterion]
-If $e\ge2$, or if the model satisfies $p\mid a_1$, then $\qp\bigl(\alpha(P)/\beta(P)\bigr)=-\lambda$. Hence, in a model with $p\mid a_1$, $c\ge2$ if and only if $\lambda=0$.
-\end{thmB}
+\begin{theorem}\label{thm:criterion}
+Suppose $e\ge2$ or $p\mid a_1$. Then $\qp(\alpha(P)/\beta(P))=-\lambda$. In particular, in a model with $p\mid a_1$, $c\ge2$ if and only if $\lambda=0$.
+\end{theorem}
 
 \begin{proof}
-\emph{Step 1 (denominators).} Write $x(P')=a/d'^2$, $y(P')=b/d'^3$ with $p\nmid d'$, possible since $P'$ does not reduce to $O$. The homogenised values $\Phi:=d'^{2p^2}\phi_p(P')$, $\Psi:=d'^{p^2-1}\psi_p(P')$ and $\Omega:=d'^{3p^2}\omega_p(P')$ are integers, and $x(P)=\Phi/(d'\Psi)^2$, $y(P)=\Omega/(d'\Psi)^3$. By (A2) there is no cancellation, so $d(P)=d'|\Psi|$, $\alpha=\pm\Phi$, $\beta=\pm\Omega$ and $\alpha/\beta=(\phi_p(P')/\omega_p(P'))\,d'^{-p^2}$. As $\qp$ is a homomorphism and $\qp(d'^{p^2})=0$,
-\begin{equation}\label{eq:star}
-\qp(\alpha/\beta)=\qp\bigl(\phi_p(P')\bigr)-\qp\bigl(\omega_p(P')\bigr).
-\end{equation}
-In particular $\phi_p(P')$ and $\omega_p(P')$ are $p$-adic units.
-
-\emph{Step 2 (the Weierstrass equation).} Write $\phi=\phi_p(P')$, $\omega=\omega_p(P')$, $\psi=\psi_p(P')$. Multiplying the equation at $pP'$ by $\psi^6$,
+Write $x(P')=a/d'^2$ with $p\nmid d'$. Clearing denominators in $x(P)=\phi_p/\psi_p^2$ and $y(P)=\omega_p/\psi_p^3$, and using \textup{(A2)} to exclude cancellation, we get $\alpha/\beta=\pm(\phi/\omega)\,d'^{-p^2}$ with $\phi=\phi_p(x(P'))$ and $\omega=\omega_p(P')$; in particular $\phi$ and $\omega$ are units, and
+\[
+\qp(\alpha/\beta)=\qp(\phi)-\qp(\omega).
+\]
+Multiplying the Weierstrass equation at $P$ by $\psi^6$, with $\psi=\psi_p(x(P'))$,
 \[
 \omega^2+a_1\phi\omega\psi+a_3\omega\psi^3=\phi^3+a_2\phi^2\psi^2+a_4\phi\psi^4+a_6\psi^6 .
 \]
-Since $\vp(\psi)=\vp(d(P))=e$, every term of $\omega^2-\phi^3$ other than $a_1\phi\omega\psi$ has valuation $\ge2e\ge2$, and that one has valuation $\vp(a_1)+e$. Under either hypothesis $\omega^2\equiv\phi^3\pmod{p^2}$.
-
-\emph{Step 3.} Write $\phi^{p-1}=1+pA'$ and $\omega^{p-1}=1+pB'$. Raising $\omega^2\equiv\phi^3\pmod{p^2}$ to the power $p-1$ gives $2B'\equiv3A'\pmod p$, so $\qp(\phi)=2\lambda$ and $\qp(\omega)=3\lambda$, and \eqref{eq:star} gives $\qp(\alpha/\beta)=-\lambda$. The last assertion follows from \eqref{eq:logq}: $c\ge2$ if and only if $\qp(\alpha/\beta)=0$.
+Here $v_p(\psi)=e$, so all terms of $\omega^2-\phi^3$ except $a_1\phi\omega\psi$ have valuation at least $2e$, and that term has valuation $v_p(a_1)+e$. Under either hypothesis $\omega^2\equiv\phi^3\pmod{p^2}$. Raising to the power $p-1$ gives $2\qp(\omega)=3\qp(\phi)$. Hence $\qp(\phi)=2\lambda$, $\qp(\omega)=3\lambda$ and $\qp(\alpha/\beta)=-\lambda$.
 \end{proof}
 
 \begin{remark}
-Without either hypothesis the term $a_1\phi\omega\psi$ survives modulo $p^2$ and one finds $\qp(\alpha/\beta)=-\lambda-w_1/2$ with $w_1:=a_1\,\omega\,(\psi/p)/\phi^2\bmod p$. This is why the model with $p\mid a_1$ is used.
+In a general model, $\qp(\alpha/\beta)=-\lambda-\frac12a_1\omega(\psi/p)/\phi^2\bmod p$.
 \end{remark}
 
-\begin{thmC}[Vélu factorisation]
-Let $K$ be a field of characteristic $0$, $E/K$ given by a Weierstrass equation, $m\ge3$ odd, $D\subset E(\bar K)$ a Galois-stable cyclic subgroup of order $m$, and $T\in D\smallsetminus\{O\}$ with $x(T)\in K$. Let
-\[
-\Pi(x):=\prod_{\{\pm Q\}\subset D\smallsetminus\{O\}}\bigl(x-x(Q)\bigr),
-\]
-monic of degree $(m-1)/2$, and let $\bar\phi$, monic of degree $m$, be the numerator of the $x$-part $\bar\phi/\Pi^2$ of the Vélu isogeny $\pi_D\colon E\to E/D$. Then $\phi_m(x(T))=\bar\phi(x(T))^m$.
-\end{thmC}
+\begin{theorem}[Vélu]\label{thm:velu}
+Let $K$ be a field of characteristic $0$, $m\ge3$ odd, $D\subset E(\bar K)$ a Galois-stable cyclic subgroup of order $m$, and $T\in D\smallsetminus\{O\}$ with $x(T)\in K$. Let $\Pi(x)=\prod_{\{\pm Q\}\subset D\smallsetminus\{O\}}(x-x(Q))$ and let $\bar\phi/\Pi^2$ be the $x$-coordinate of the Vélu isogeny $E\to E/D$, with $\bar\phi$ monic of degree $m$. Then $\phi_m(x(T))=\bar\phi(x(T))^m$.
+\end{theorem}
 
 \begin{proof}
-$D$ being Galois-stable, $\pi_D$ and its dual $\hat\pi_D$ are defined over $K$ and $[m]=\hat\pi_D\circ\pi_D$. Fix a model of $E/D$ and write $x\circ\hat\pi_D=\phi^\vee/(\psi^\vee)^2$ with $\phi^\vee(X)=\sum_{i\le m}c_iX^i$, $c_m=:A\ne0$, $\deg(\psi^\vee)^2=m-1$. Clearing denominators in $x\circ[m]=(\phi^\vee/(\psi^\vee)^2)\circ(\bar\phi/\Pi^2)$ gives $\phi_m/\psi_m^2=N/\mathrm{Den}$ with
+Write $[m]=\hat\pi\circ\pi$ and $x\circ\hat\pi=\phi^\vee/(\psi^\vee)^2$ with $\phi^\vee=\sum_{i\le m}c_iX^i$, $c_m\ne0$. Then $\phi_m/\psi_m^2=N/\mathrm{Den}$ with
 \[
-N(x):=\sum_{i\le m}c_i\,\bar\phi(x)^i\,\Pi(x)^{2(m-i)},\qquad \mathrm{Den}(x):=\Pi^{2m}\,\psi^\vee(\bar\phi/\Pi^2)^2 .
+N=\sum_{i\le m}c_i\,\bar\phi^{\,i}\,\Pi^{2(m-i)},\qquad\deg N=m^2,\qquad\deg\mathrm{Den}=m^2-1 .
 \]
-Since $\deg(\bar\phi^i\Pi^{2(m-i)})=m^2-m+i$, only $i=m$ reaches the top degree: $\deg N=m^2$ with leading coefficient $A$, and $\deg\mathrm{Den}=m^2-1$. As $x\circ[m]$ has degree $m^2$, the fraction $N/\mathrm{Den}$ is reduced, and since $\phi_m$, $\psi_m^2$ are coprime with $\phi_m$ monic, $N=A\phi_m$. At $x=x(T)$ one has $\Pi(x(T))=0$, so $N(x(T))=A\,\bar\phi(x(T))^m$, and $A$ cancels.
+Since $x\circ[m]$ has degree $m^2$, the fraction is reduced, so $N=c_m\phi_m$. At $x(T)$ the factor $\Pi$ vanishes, so $N(x(T))=c_m\bar\phi(x(T))^m$.
 \end{proof}
 
-\begin{corD}
-If $E(\Qp)[p]\ne0$, then $\lambda(\bar x)=0$ for every $\bar x\in\Ebar(\Fp)\smallsetminus\{O\}$.
-\end{corD}
+\begin{corollary}\label{cor:split-lambda}
+If $E(\Qp)[p]\ne0$, then $\lambda(\bar x)=0$ for every $\bar x\ne O$.
+\end{corollary}
 
 \begin{proof}
-Let $\tau\in E(\Qp)$ have order $p$; as in Lemma~\ref{lem:depth}, $\tau$ does not reduce to $O$. The subgroup $D:=\langle\tau\rangle$ is $\Qp$-rational with $D\smallsetminus\{O\}\subset E(\Qp)$, so for $T\in D\smallsetminus\{O\}$ we have $x(T)\in\Zp$ and Theorem~C gives $\phi_p(x(T))=\bar\phi(x(T))^p$. Both sides are units (Step~1 of the proof of Theorem~B), so $\qp(\phi_p(x(T)))=p\,\qp(\bar\phi(x(T)))=0$. The reduction $D\smallsetminus\{O\}\to\Ebar(\Fp)\smallsetminus\{O\}$ is injective ($D\cap\widehat E=0$) between sets of cardinality $p-1$, hence bijective, so $x(T)\bmod p$ runs over all non-zero classes, and Lemma~\ref{lem:local} gives $\lambda\equiv0$.
+Let $D=E(\Qp)[p]$. For $T\in D\smallsetminus\{O\}$, Theorem~\ref{thm:velu} with $K=\Qp$ gives $\phi_p(x(T))=\bar\phi(x(T))^p$, a $p$-th power of a unit, so $\qp(\phi_p(x(T)))=0$. Reduction maps $D\smallsetminus\{O\}$ bijectively onto $\Et(\Fp)\smallsetminus\{O\}$, and Lemma~\ref{lem:lambda-local} concludes.
 \end{proof}
 
-\begin{corE}
+\begin{corollary}\label{cor:split-c}
 If $E$ is split at $p$, then $c\ge2$ in every model.
-\end{corE}
+\end{corollary}
 
 \begin{proof}
-Lemma~\ref{lem:depth} gives $e\ge2$, Corollary~D gives $\lambda=0$, and Theorem~B gives $\qp(\alpha/\beta)=0$.
+Combine Lemma~\ref{lem:depth}, Corollary~\ref{cor:split-lambda} and Theorem~\ref{thm:criterion}.
 \end{proof}
 
-The converse of Corollary~D is a known criterion for local torsion, here read as a Fermat quotient.
-
-\begin{prop6}
-Let $p\ge5$ be a prime of good ordinary reduction with $\#\Ebar(\Fp)=p$. Then for every $\bar x\in\Ebar(\Fp)\smallsetminus\{O\}$,
+\begin{proposition}\label{prop:criterion}
+Let $p\ge5$ be a prime of good ordinary reduction with $\#\Et(\Fp)=p$. For every $\bar x\in\Et(\Fp)\smallsetminus\{O\}$,
 \[
 \lambda(\bar x)=0\iff E(\Qp)[p]\ne0 .
 \]
-\end{prop6}
+\end{proposition}
 
-Both sides depend only on $E\bmod p^2$. The equivalence of the right-hand side with ``$E\bmod p^2$ is the canonical lift of $\Ebar$'' is due to Gross \cite{Gro90} (case $n=1$ of the tameness criterion, quoted as \cite[Thm.~4.1]{LR} under the hypotheses $j\ne0,1728$ and $E[p]$ irreducible), and is proved without hypotheses on $j$ in \cite[Lemma~3.2]{DW} and \cite[\S2.1.1, Lemma~4.1]{OY}. The direction $\Leftarrow$ is Corollary~D. For the direction $\Rightarrow$ we give in Appendix~\ref{app:prop6} a proof in terms of $\lambda$ itself, valid for all $p\ge5$: $\lambda$ is an affine function on the deformations of $\Ebar$ over $\Z/p^2$ with a non-zero slope, so it vanishes on exactly one of them, which by Corollary~D is the split one.
+The implication $\Leftarrow$ is Corollary~\ref{cor:split-lambda}. The converse is proved in Appendix~\ref{app:criterion}: $\lambda$ is an affine function of the deformation parameter of $\Et$ over $\Z/p^2$ with non-zero slope, and exactly one deformation is split. In the language of canonical lifts the equivalence is known \cite{Gro90,LR,DW,OY}.
 
-\begin{thmS}[the non-split case]
-Suppose $\#\Ebar(\Fp)=p$ and $p\nmid n$, and let $P'\in E(\Q)$ have reduction of exact order $p$ and satisfy \textup{(A2)}. If $E(\Qp)[p]=0$, then $\vp\bigl(h_p(pP')\bigr)=1$ exactly, hence $\vp(h_p(P'))=-1$.
-\end{thmS}
-
-\begin{proof}
-Choose the model with $p\mid a_1$. Since $E$ is not split, $e=1$ by Lemma~\ref{lem:depth}, so $b\ge2$ by Lemma~\ref{lem:decomp}. By Theorem~B, $\qp(\alpha/\beta)=-\lambda$, and $\lambda\ne0$ by Proposition~6, so $c=1$. From $h_p(pP')/2=\Lambda_\sigma+A$ with $b\ge2>1=c$ we get $\vp(h_p(pP'))=1$. Finally $h_p(pP')=p^2h_p(P')$.
-\end{proof}
-
-\section{The Main Theorem}\label{sec:main}
-
-\begin{thmx}[Main Theorem]\label{thm:main}
-Suppose $\#\Ebar(\Fp)=p$, $p\nmid\prod_\ell c_\ell$ and $\iota$. Let $M_\Lam$ be the height matrix on a basis of $\Lam$.
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item Every entry of $M_\Lam$ lies in $\Zp$ if and only if $E(\Qp)[p]\ne0$.
-\item If $r=1$, then $\vp(\Reg_p)\ge0$ if and only if $E(\Qp)[p]\ne0$, and in the non-split case $\vp(\Reg_p)=-1$.
-\item If $E(\Qp)[p]\ne0$, then $\vp(\Reg_p)\ge\max(r-2,0)$.
-\end{enumerate}
-Without $\iota$, Theorem~\ref{thm:A} already gives $\vp(\Reg_p)\ge r$.
-\end{thmx}
+\begin{theorem}\label{thm:nonsplit}
+Assume $\#\Et(\Fp)=p$, $p\nmid n$ and $E(\Qp)[p]=0$. Let $P'$ satisfy \textup{(A2)} and have reduction of order $p$. Then $v_p(h_p(pP'))=1$ and $v_p(h_p(P'))=-1$.
+\end{theorem}
 
 \begin{proof}
-As $h_p$ is a quadratic form and $p\nmid n$, $\vp(h_p(P))=\vp(h_p(nP))$, and $nP$ satisfies (A2) for every $P\in E(\Q)$.
-
-\emph{($\Leftarrow$ of (i)), $P\in\Lam\smallsetminus\Lam_0$.} The reduction of $P$, hence of $P':=nP$, has exact order $p$, and $P'':=pP'$ satisfies (A1) and (A2). As $E$ is split, Lemma~\ref{lem:depth} gives $e\ge2$, hence $b\ge2$ by Lemma~\ref{lem:decomp} and $c\ge2$ by Corollary~E; so $\vp(h_p(P''))\ge2$, and $h_p(P'')=p^2h_p(P')$ gives $\vp(h_p(P))\ge0$.
-
-\emph{($\Leftarrow$ of (i)), $P\in\Lam_0$.} Then $nP$ satisfies (A1) and (A2), and $\vp(h_p(P))\ge1$ by Lemma~\ref{lem:unit}.
-
-So $\vp(h_p(P))\ge0$ for every $P\in\Lam$; polarising, $h_p(P,R)\in\Zp$ as $p$ is odd. Hence every entry of $M_\Lam$ is integral and $\vp(\Reg_p)\ge0$; with Theorem~\ref{thm:A} this is (iii).
-
-\emph{($\Rightarrow$ of (i)).} Suppose $E(\Qp)[p]=0$. By $\iota$ there is $P\in\Lam$ whose reduction has order $p$; Theorem~S applied to $nP$ gives $\vp(h_p(P))=-1$. If all entries of $M_\Lam$ were integral, so would be the value of the quadratic form at every point of $\Lam$, a contradiction.
-
-\emph{(ii).} If $r=1$ and $Q$ generates $\Lam$, then $Q\notin\Lam_0$ by $\iota$ and $\Reg_p=h_p(Q)$; the two cases above give $\vp(\Reg_p)\ge0$ if $E$ is split and $\vp(\Reg_p)=-1$ otherwise.
+Take $p\mid a_1$. Then $e=1$ by Lemma~\ref{lem:depth} and $b\ge2$ by Lemma~\ref{lem:decomp}. By Theorem~\ref{thm:criterion} and Proposition~\ref{prop:criterion}, $\qp(\alpha/\beta)=-\lambda\ne0$, so $c=1$. Hence $v_p(h_p(pP'))=1$, and $h_p(pP')=p^2h_p(P')$.
 \end{proof}
 
-\begin{remark}
-The proof needs $\vp(h_p)\ge0$ on $\Lam$, not $\vp(h_p)\ge2$ on $\Lam_0$; for a point of $\Lam\smallsetminus\Lam_0$ it suffices that its reduction have order $p$. That a non-integral entry has valuation \emph{exactly} $-1$, and not merely $\ge-1$, is what Theorem~R below uses.
-\end{remark}
+\section{Proof of Theorem A}\label{sec:main}
+
+Since $p\nmid n$, $v_p(h_p(P))=v_p(h_p(nP))$, and $nP$ satisfies \textup{(A2)} for every $P\in E(\Q)$.
+
+\emph{Split case.} Let $P\in\Lam$. If $P\in\Lam_0$, then $nP$ satisfies \textup{(A1)} and \textup{(A2)}, and $v_p(h_p(P))\ge1$ by Lemma~\ref{lem:A1A2}. If $P\notin\Lam_0$, put $P'=nP$ and $P''=pP'$. By Lemma~\ref{lem:depth}, $e=v_p(t(P''))\ge2$; by Lemma~\ref{lem:decomp} and Corollary~\ref{cor:split-c}, $b\ge2$ and $c\ge2$. So $v_p(h_p(P''))\ge2$ and $v_p(h_p(P))=v_p(h_p(P'))\ge0$. Thus $h_p$ is $\Zp$-valued on $\Lam$, and since $p$ is odd so is the pairing. This proves ``$\Leftarrow$'' in (1), the split half of (2), and, with Theorem~\ref{thm:baseline}, part (3).
+
+\emph{Non-split case.} By \textup{($\iota$)} some $P\in\Lam$ has reduction of order $p$, and Theorem~\ref{thm:nonsplit} applied to $nP$ gives $v_p(h_p(P))=-1$. If all entries of $M$ were integral, $h_p$ would be integral on $\Lam$. This proves ``$\Rightarrow$'' in (1). For $r=1$, a generator $Q$ of $\Lam$ lies outside $\Lam_0$ and $\Reg_p=h_p(Q)$, which gives the rest of (2). \qed
 
 \section{The height matrix modulo \texorpdfstring{$p$}{p}}\label{sec:modp}
 
-Throughout this section $\#\Ebar(\Fp)=p$, $p\nmid n$ and $\iota$ hold. Fix a generator $\bar x_0$ of $\Ebar(\Fp)$, and let $\chi\colon\Lam\to\Fp$ be the discrete logarithm of the reduction with respect to it; $\chi$ is onto and $\ker\chi=\Lam_0$.
+Assume $\#\Et(\Fp)=p$, $p\nmid n$ and \textup{($\iota$)}. Fix a generator $\bar x_0$ of $\Et(\Fp)$ and let $\chi\colon\Lam\to\Fp$ be the discrete logarithm of the reduction; so $\ker\chi=\Lam_0$.
 
-\subsection{Two scaling properties of $\lambda$}
-
-\begin{thmH}[scaling]
-Let $Q\in E(\Zp)$ have non-zero reduction and let $m$ be prime to $p$. Then $\qp\bigl(\phi_p(x(mQ))\bigr)=m^2\,\qp\bigl(\phi_p(x(Q))\bigr)$, that is, $\lambda(m\bar x)=m^2\lambda(\bar x)$.
-\end{thmH}
+\begin{proposition}\label{prop:scaling}
+Let $Q\in E(\Zp)$ have non-zero reduction and let $p\nmid m$. Then \[\qp\bigl(\phi_p(x(mQ))\bigr)=m^2\,\qp\bigl(\phi_p(x(Q))\bigr).\] Consequently $\lambda=\lambda_1\chi^2$ on $\Et(\Fp)\smallsetminus\{O\}$, where $\lambda_1=\lambda(\bar x_0)$.
+\end{proposition}
 
 \begin{proof}
-The composition rule $\psi_{ab}(R)=\psi_b(R)^{a^2}\psi_a(bR)$ at $(a,b)=(p,m)$ and $(m,p)$, together with $\phi_k(x(R))=x(kR)\psi_k(R)^2$ and the fact that $\phi_m$ is monic of degree $m^2$ over $\Z[a_1,\dots,a_6]$, evaluated at $X:=x(pQ)$ of valuation $-2e\le-2$, gives the identity
-\begin{equation}\label{eq:scale}
-\phi_p(x(mQ))\,\psi_m(Q)^{2p^2}=\phi_p(x(Q))^{m^2}(1+\delta),\qquad \delta\in p^2\Zp .
-\end{equation}
-The three division-polynomial values are units, $\psi_m(Q)^{2p^2}$ is a $p$-th power and $1+\delta\in1+p^2\Zp$, so applying $\qp$ gives the claim.
+From the composition rule $\psi_{ab}(R)=\psi_b(R)^{a^2}\psi_a(bR)$ for $(a,b)=(p,m)$ and $(m,p)$, and from $\phi_k(x(R))=x(kR)\psi_k(R)^2$ with $\phi_m$ monic of degree $m^2$ evaluated at $x(pQ)$, which has negative valuation, one gets
+\[
+\phi_p(x(mQ))\,\psi_m(Q)^{2p^2}=\phi_p(x(Q))^{m^2}(1+\delta),\qquad\delta\in p^2\Zp .
+\]
+The factor $\psi_m(Q)^{2p^2}$ is a $p$-th power of a unit; apply $\qp$.
 \end{proof}
 
-\begin{corHp}
-$\lambda$ vanishes at one non-zero class of $\Ebar(\Fp)$ if and only if it vanishes at all of them; and $\lambda=\lambda_1\chi^2$ on $\Ebar(\Fp)\smallsetminus\{O\}$ with $\lambda_1:=\lambda(\bar x_0)$.
-\end{corHp}
-
-\subsection{Bilinear algebra}
-Let $K$ be a field of characteristic $\ne2$, $B$ a symmetric bilinear form on a $K$-vector space $V$, $\chi$ a non-zero linear form, $v\in V$ with $\chi(v)=1$, and $W:=\ker\chi$.
-
-\begin{lemma}\label{lem:R0}
-\textup{(R0)} If $B(x,x)=0\iff\chi(x)=0$, then $c:=B(v,v)\ne0$ and $B(x,y)=c\,\chi(x)\chi(y)$.
-
-\textup{(R0$_s$)} If $\chi(x)=0\Rightarrow B(x,x)=0$, then
-\[
-B(x,y)=B(x,v)\chi(y)+\chi(x)B(y,v)-B(v,v)\chi(x)\chi(y);
-\]
-in particular $\operatorname{rank}B\le2$.
+\begin{lemma}\label{lem:bilinear}
+Let $B$ be a symmetric bilinear form on a vector space $V$ over a field of characteristic $\ne2$, $\chi$ a non-zero linear form, and $v\in V$ with $\chi(v)=1$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $B(x,x)=0\iff\chi(x)=0$, then $B(v,v)\ne0$ and $B=B(v,v)\,\chi\otimes\chi$.
+\item If $\chi(x)=0\Rightarrow B(x,x)=0$, then \[B(x,y)=B(x,v)\chi(y)+\chi(x)B(y,v)-B(v,v)\chi(x)\chi(y);\] in particular $\operatorname{rank}B\le2$.
+\end{enumerate}
 \end{lemma}
 
 \begin{proof}
-In both cases $B|_{W\times W}=0$: for $w,w'\in W$, $B(w+w',w+w')=0$ leaves $2B(w,w')=0$. In (R0), moreover, $W\perp v$: if $a:=B(w,v)\ne0$ for some $w\in W$, then $s:=-B(v,v)/(2a)$ makes $x:=sw+v$ satisfy $\chi(x)=1$ and $B(x,x)=0$, a contradiction; and $c\ne0$ since $\chi(v)\ne0$. Writing $x=(x-\chi(x)v)+\chi(x)v$ and similarly for $y$ gives both formulas. In (R0$_s$) the right-hand side involves only $\chi$ and $B(\cdot,v)$, so $\ker\chi\cap\ker B(\cdot,v)$ lies in the radical.
+In both cases polarisation gives $B=0$ on $\ker\chi\times\ker\chi$. In (a), if $B(w,v)\ne0$ for some $w\in\ker\chi$, then $x=sw+v$ with $s=-B(v,v)/2B(w,v)$ has $\chi(x)=1$ and $B(x,x)=0$, which is excluded. Now decompose $x=(x-\chi(x)v)+\chi(x)v$.
 \end{proof}
 
 \subsection{The non-split case}
 
-\begin{thmR}
-Suppose in addition $E(\Qp)[p]=0$. Then there is $c\in\Fp^\times$ with
+\begin{theorem}\label{thm:R}
+Assume moreover $E(\Qp)[p]=0$. Then $p\,h_p(P,R)\in\Zp$ and
 \[
-p\,h_p(P,R)\in\Zp\quad\text{and}\quad p\,h_p(P,R)\equiv c\,\chi(P)\chi(R)\pmod p\qquad(P,R\in\Lam).
+p\,h_p(P,R)\equiv2\lambda_1\,\chi(P)\chi(R)\pmod p\qquad(P,R\in\Lam).
 \]
-Hence $\vp(h_p(P,R))=-1$ if and only if $\chi(P)\chi(R)\ne0$, and $\vp(h_p(P,R))\ge1$ when $\chi(P)=\chi(R)=0$. In particular $p\,M_\Lam\bmod p=c\,\chi\chi^t$ has rank exactly one.
-\end{thmR}
+In particular $v_p(h_p(P,R))=-1$ if and only if $\chi(P)\chi(R)\ne0$.
+\end{theorem}
 
 \begin{proof}
-Put $\mathcal Q(P):=p\,h_p(P)$ and $B(P,R):=p\,h_p(P,R)$. For $P\in\Lam_0$, Lemma~\ref{lem:unit} gives $\vp(\mathcal Q(P))\ge2$; for $P\notin\Lam_0$, Theorem~S gives $\vp(\mathcal Q(P))=0$. So $B$ is $\Zp$-valued, and since $p\Lam\subseteq\Lam_0$ it descends to $V:=\Lam/p\Lam$, where the zero set of $x\mapsto\bar B(x,x)$ is exactly the hyperplane $\ker\bar\chi$. Lemma~\ref{lem:R0}(R0) applies. The valuation statements follow by reading the congruence, and Lemma~\ref{lem:unit} polarised for $P,R\in\Lam_0$.
+Put $B=p\,h_p$. By Lemma~\ref{lem:A1A2}, $v_p(B(P,P))\ge2$ for $P\in\Lam_0$, and by Theorem~\ref{thm:nonsplit}, $v_p(B(P,P))=0$ for $P\notin\Lam_0$. So $B$ is integral and its reduction on $\Lam/p\Lam$ satisfies the hypothesis of Lemma~\ref{lem:bilinear}(a). It remains to identify the constant. Take $P'\notin\Lam_0$ satisfying \textup{(A2)}, a model with $p\mid a_1$, and $P''=pP'$. Lemma~\ref{lem:decomp} gives $v_p(\Lambda_\sigma)\ge2$, and Theorem~\ref{thm:criterion} with \eqref{eq:log-fermat} gives $A\equiv p\lambda\pmod{p^2}$. So $h_p(P'')\equiv2p\lambda\pmod{p^2}$, that is, $p\,h_p(P')\equiv2\lambda(\bar x)\pmod p$. Proposition~\ref{prop:scaling} gives the value $2\lambda_1$ at $\chi=1$.
 \end{proof}
 
-\begin{propRpp}
-In Theorem~R, $c=2\lambda_1$.
-\end{propRpp}
-
-\begin{proof}
-Let $P'\in\Lam\smallsetminus\Lam_0$ be multiplied by $n$, so that (A2) holds, and $P'':=pP'$; work in a model with $p\mid a_1$. By Lemma~\ref{lem:decomp}, $h_p(P'')=2\Lambda_\sigma+2A$ with $\vp(\Lambda_\sigma)\ge2$, and by Theorem~B and \eqref{eq:logq}, $A\equiv p\lambda\pmod{p^2}$. Hence $h_p(P'')\equiv2p\lambda\pmod{p^2}$ and $p\,h_p(P')\equiv2\lambda\pmod p$. By Corollary~H$'$, $\lambda=\lambda_1\chi^2$, and $c$ is the value at $\chi=1$.
-\end{proof}
-
-So in the non-split case the whole matrix $p\,M_\Lam$ modulo $p$ is determined by the single element $\lambda_1\in\Fp$, a Fermat quotient of $\phi_p$ at one point; no rational point enters.
-
-\begin{corRp}
-In Theorem~R choose a basis of $\Lam$ with $\chi(e_1)=1$ and $e_2,\dots,e_r\in\Lam_0$. Then $p\,M_\Lam=DA'D$ with $D=\mathrm{diag}(1,p,\dots,p)$ and $A'$ integral with $A'_{11}\in\Zp^\times$; with $T$ the Schur complement of $A'_{11}$ in $A'$,
+\begin{corollary}\label{cor:R-det}
+In the situation of Theorem~\ref{thm:R}, take a basis with $\chi(e_1)=1$ and $e_2,\dots,e_r\in\Lam_0$. Then $pM=DA'D$, where $D=\mathrm{diag}(1,p,\dots,p)$, $A'$ integral and $A'_{11}$ a unit, and
 \[
-\vp(\Reg_p)=(r-2)+\vp(\det T).
+v_p(\Reg_p)=(r-2)+v_p(\det T),
 \]
-For $r=1$, $T$ is empty and $\vp(\Reg_p)=-1$.
-\end{corRp}
+where $T$ is the Schur complement of $A'_{11}$. For $r=1$ this gives $v_p(\Reg_p)=-1$.
+\end{corollary}
 
 \begin{proof}
-By Theorem~R, $p\,h_p(e_1)$ is a unit and $p\,h_p(e_1,e_j)\in p\Zp$ for $j\ge2$; for $i,j\ge2$, Lemma~\ref{lem:unit} polarised gives $p\,h_p(e_i,e_j)\in p^2\Zp$. Hence $p\,M_\Lam=DA'D$ with $A'$ integral, $\det(p\,M_\Lam)=p^{2(r-1)}\det A'$ and $\det(p\,M_\Lam)=p^r\Reg_p$, so $\Reg_p=p^{r-2}\det A'=p^{r-2}A'_{11}\det T$.
+For $i,j\ge2$, $p\,h_p(e_i,e_j)\in p^2\Zp$ by Lemma~\ref{lem:A1A2}, and $p\,h_p(e_1,e_j)\in p\Zp$ by Theorem~\ref{thm:R}. So $\det(pM)=p^{2(r-1)}\det A'$, while $\det(pM)=p^r\Reg_p$.
 \end{proof}
 
 \subsection{The split case}
 
-\begin{thmRs}
-Suppose in addition $E(\Qp)[p]\ne0$, and let $\bar M:=M_\Lam\bmod p$, a symmetric bilinear form on $V=\Lam/p\Lam$. Then $\bar M$ vanishes on $\ker\bar\chi\times\ker\bar\chi$, so for any $v$ with $\bar\chi(v)=1$
+\begin{theorem}\label{thm:Rs}
+Assume moreover $E(\Qp)[p]\ne0$, and let $\bar M=M\bmod p$. Then $\bar M=0$ on $\ker\chi\times\ker\chi$, so $\rho:=\operatorname{rank}\bar M\le2$. In a basis with $\chi(e_1)\ne0$ and $e_2,\dots,e_r\in\Lam_0$,
 \[
-\bar M(x,y)=\bar M(x,v)\bar\chi(y)+\bar\chi(x)\bar M(y,v)-\bar M(v,v)\bar\chi(x)\bar\chi(y),
+\bar M=\begin{pmatrix}a&b^t\\ b&0\end{pmatrix},\qquad \rho=2\iff b\ne0 .
 \]
-and $\rho_1:=\operatorname{rank}\bar M\le2$. In a basis with $\chi(e_1)\ne0$ and $e_2,\dots,e_r\in\Lam_0$, $\bar M=\left(\begin{smallmatrix}a&b^t\\ b&0\end{smallmatrix}\right)$ with $a=h_p(e_1)\bmod p$, $b_j=h_p(e_1,e_j)\bmod p$, and $\rho_1=2\iff b\ne0$.
-\end{thmRs}
+\end{theorem}
 
 \begin{proof}
-$M_\Lam$ is integral by Theorem~\ref{thm:main}(i). For $P,R\in\Lam_0$, Lemma~\ref{lem:unit} puts $h_p(P),h_p(R),h_p(P+R)$ in $2p\Zp$, so $h_p(P,R)\in p\Zp$; apply Lemma~\ref{lem:R0}(R0$_s$). The leading $2\times2$ minor on $(e_1,e_j)$ is $-b_j^2$.
+$M$ is integral by Theorem~A. For $P,R\in\Lam_0$, Lemma~\ref{lem:A1A2} puts $h_p(P)$, $h_p(R)$, $h_p(P+R)$ in $2p\Zp$; apply Lemma~\ref{lem:bilinear}(b).
 \end{proof}
 
-\begin{corRps}
-In Theorem~R$_s$, $\vp(\Reg_p)\ge r-\rho_1$. If $\rho_1=2$, then $\vp(\Reg_p)=(r-2)+\vp(\det T_s)$ for an integral $(r-2)\times(r-2)$ Schur complement $T_s$. For $r=2$: $\vp(\Reg_p)=0\iff\rho_1=2$.
-\end{corRps}
+\begin{corollary}\label{cor:Rs-det}
+In the situation of Theorem~\ref{thm:Rs}, $v_p(\Reg_p)\ge r-\rho$. If $\rho=2$, then $v_p(\Reg_p)=(r-2)+v_p(\det T_s)$ for an integral $(r-2)\times(r-2)$ matrix $T_s$. In particular, for $r=2$, $\Reg_p$ is a unit if and only if $\rho=2$.
+\end{corollary}
 
 \begin{proof}
-Write $M:=M_\Lam$ in the basis of Theorem~R$_s$, so $M_{ij}\in p\Zp$ for $i,j\ge2$. If $\rho_1=2$, a change of basis inside $\Lam_0\otimes\Zp$ (which does not change $\vp(\det M)$) brings $b$ to $(b_1,0,\dots,0)$ with $b_1$ a unit. The block $S=\left(\begin{smallmatrix}M_{11}&b_1\\ b_1&pC\end{smallmatrix}\right)$ has $\det S\equiv-b_1^2\not\equiv0$, so $S\in GL_2(\Zp)$ and its Schur complement in $M$ is $p\,T_s$ with $T_s$ integral; hence $\det M=\det S\cdot p^{r-2}\det T_s$. If $\rho_1\le1$, then $p\mid M_{1j}$ for $j\ge2$ as well, so rows $2,\dots,r$ are divisible by $p$ and $\vp(\Reg_p)\ge r-1$; if moreover $a=0$, then $\vp(\Reg_p)\ge r$.
+If $\rho=2$, change the basis of $\Lam_0\otimes\Zp$ so that $b=(b_1,0,\dots,0)$ with $b_1$ a unit. The upper-left $2\times2$ block has determinant $\equiv-b_1^2$, so it is invertible over $\Zp$, and its Schur complement is $p\,T_s$ with $T_s$ integral. If $\rho\le1$, the rows $2,\dots,r$ of $M$ are divisible by $p$.
 \end{proof}
 
-Since $\rho_1\le2$, Corollary~R$'_s$ contains Theorem~\ref{thm:main}(iii) and says when it is attained. The constant $a$ is again a Fermat quotient, one digit deeper. In the split case $\lambda=0$ by Corollary~D, so for $u=\phi_p(P')$ we have $u^{p-1}\in1+p^2\Zp$, and the \emph{second Fermat quotient}
+In the split case $\qp(\phi_p(x(P')))=0$ by Corollary~\ref{cor:split-lambda}, so the second Fermat quotient
 \[
-q^{(2)}(u):=\frac{u^{p-1}-1}{p^2}\bmod p\qquad(u\in\Zp^\times,\ \qp(u)=0)
+q^{(2)}(u)=\frac{u^{p-1}-1}{p^2}\bmod p\qquad(u\in\Zp^\times,\ \qp(u)=0)
 \]
-is defined; it is a homomorphism on that subgroup.
+is defined at $u=\phi_p(x(P'))$. It is a homomorphism on its domain.
 
-\begin{propRpps}
-In Theorem~R$_s$ let $e_1\in\Lam$ with $\chi(e_1)\ne0$, $P':=ne_1$, and $\lambda^{(2)}:=\tfrac12q^{(2)}(\phi_p(P'))\in\Fp$. Then $a=h_p(e_1)\bmod p=2\lambda^{(2)}/n^2$. In particular, for $r=1$, $\vp(\Reg_p)=0\iff\lambda^{(2)}\ne0$.
-\end{propRpps}
-
-\begin{proof}
-Work in a model with $p\mid a_1$, put $P'':=pP'$ and $e:=\vp(d(P''))\ge2$ (Lemma~\ref{lem:depth}). In Step~2 of the proof of Theorem~B, every term of $\omega^2-\phi^3$ other than $a_1\phi\omega\psi$ has valuation $\ge2e\ge4$, and that one has valuation $\ge e+1\ge3$; hence $\omega^2\equiv\phi^3\pmod{p^3}$. Corollary~D gives $\qp(\phi)=\qp(\omega)=0$; writing $\phi^{p-1}=1+p^2A_2$ and $\omega^{p-1}=1+p^2B_2$ we get $2B_2\equiv3A_2\pmod p$, so $q^{(2)}(\phi)=2\lambda^{(2)}$ and $q^{(2)}(\omega)=3\lambda^{(2)}$. The factor $d'^{p^2}$ of Step~1 has $q^{(2)}=0$, so $q^{(2)}(\alpha/\beta)=-\lambda^{(2)}$. For a unit $u$ with $\qp(u)=0$ one has $\log_pu\equiv-p^2q^{(2)}(u)\pmod{p^3}$, so $A\equiv p^2\lambda^{(2)}\pmod{p^3}$, while $\vp(\Lambda_\sigma)\ge3$ by Lemma~\ref{lem:decomp}. Hence $h_p(P'')\equiv2p^2\lambda^{(2)}\pmod{p^3}$, and $h_p(P'')=p^2n^2h_p(e_1)$.
-\end{proof}
-
-The analogy with Proposition~R$''$ is exact, with one difference: $\lambda$ depends only on $E\bmod p^2$ and the class $\bar x$, whereas $\lambda^{(2)}$ depends on $E\bmod p^3$ and on the point modulo $p^2$, because $\phi_p'$ is divisible by $p$ but not by $p^2$. There is therefore no law for the split value of $\vp(\Reg_p)$ in terms of the reduction alone; its finer structure is studied in \cite{Companion}.
-
-\subsection{The case $\#\Ebar(\F_5)=10$}
-
-\begin{propRplus}
-Let $p\ge5$ have good ordinary reduction with $p\mid N:=\#\Ebar(\Fp)$ and $p\nmid n$, let $\chi\colon\Lam\to\Ebar(\Fp)[p]\cong\Z/p$ be the $p$-part of the reduction, and assume $\chi$ onto. Then Theorem~S, Theorem~R, Proposition~R$''$ and Corollary~R$'$ hold as stated. Moreover $p\,\|\,N$, and the only case not covered by $\#\Ebar(\Fp)=p$ is $N=2p$, which forces $p=5$.
-\end{propRplus}
-
-\begin{proof}
-If $\chi(P)=0$, the order of the reduction of $P$ divides $m:=N/p$, so $mnP$ satisfies (A1) and (A2) and $h_p(P)=h_p(mnP)/(mn)^2\in2p\Zp$. If $\chi(P)\ne0$, then $mnP$ has reduction of exact order $p$ and Theorem~S applies to it. The bilinear algebra is unchanged. Finally $N\le p+1+2\sqrt p<p^2$ gives $N\in\{p,2p\}$, and $N=2p$ forces $(p-1)^2\le4p$, hence $p=5$.
-\end{proof}
-
-\section{The CM case and rank-two CM curves}\label{sec:CM}
-
-\begin{thmF}[{\cite[Prop.~2.1(3)]{DW}}]
-Suppose $E/\Q$ has complex multiplication and $p\ge5$ is a prime of good ordinary reduction with $a_p=1$. Then $E(\Qp)[p]\ne0$.
-\end{thmF}
-
-This is due to David and Weston, who prove it for $p>3$ together with the converse. For completeness we sketch a self-contained argument. The prime $p$ splits in the CM field $k$, so the CM order acts on $E_{/\Qp}$; by Deuring's lifting theorem Frobenius lifts to an endomorphism $\pi$ with $\pi+\bar\pi=1$ and $\pi\bar\pi=p$. The isogeny $\varrho:=1-\pi=\bar\pi$ has degree $p$ and is separable on the special fibre, as $(1-F)^*\omega=\omega$; so $\ker\varrho$ is étale of order $p$ over $\Zp$, Frobenius acts on it as $\pi=1$, and its points are therefore defined over $\Qp$.
-
-\begin{corFp}
-If $E$ has CM, $p\ge5$ is anomalous of good ordinary reduction, $p\nmid n$ and $\iota$ holds, then $\vp(\Reg_p)\ge\max(r-2,0)$. A CM curve never shows the deficit.
-\end{corFp}
-
-Recent work of Banwait \cite{Ban} proves, for rank-two CM curves and outside an explicit set of primes, that the normalised second Taylor coefficient of the Mazur--Tate--Teitelbaum $p$-adic $L$-function is a unit if and only if the cyclotomic regulator is a unit and $\mathrm{Sha}(E/\Q)[p^\infty]=0$; the excluded set contains the anomalous primes. Our results describe the regulator at those primes.
-
-\begin{corG}
-Let $E/\Q$ have CM and rank two, and let $p\ge5$ be an anomalous prime of good ordinary reduction with $p\nmid n$ and $\iota$. Then the height matrix is $p$-integral, $\vp(\Reg_p)\ge0$, and
+\begin{proposition}\label{prop:Rs-const}
+In the situation of Theorem~\ref{thm:Rs}, let $\chi(e_1)\ne0$, $P'=ne_1$, and $\lambda^{(2)}=\frac12q^{(2)}(\phi_p(x(P')))$. Then
 \[
-\vp(\Reg_p)=0\iff \operatorname{rank}_{\Fp}(M_\Lam\bmod p)=2\iff h_p(e_1,e_2)\not\equiv0\pmod p
+h_p(e_1)\equiv2\lambda^{(2)}/n^2\pmod p .
 \]
-for any basis with $\chi(e_2)=0$.
-\end{corG}
+For $r=1$, $\Reg_p$ is a unit if and only if $\lambda^{(2)}\ne0$.
+\end{proposition}
 
 \begin{proof}
-By Theorem~F, $E$ is split at $p$; apply Theorem~\ref{thm:main}(i) and Corollary~R$'_s$ with $r=2$.
+Take $p\mid a_1$ and $P''=pP'$, so $e\ge2$. In the Weierstrass identity of Theorem~\ref{thm:criterion} the term $a_1\phi\omega\psi$ now has valuation at least $3$ and the others at least $4$, so $\omega^2\equiv\phi^3\pmod{p^3}$. Since $\qp(\phi)=\qp(\omega)=0$, this gives $2q^{(2)}(\omega)=3q^{(2)}(\phi)$, hence $q^{(2)}(\alpha/\beta)=-\lambda^{(2)}$; the factor $d'^{p^2}$ has trivial $q^{(2)}$. For $u$ with $\qp(u)=0$ one has $\log_pu\equiv-p^2q^{(2)}(u)\pmod{p^3}$, so $A\equiv p^2\lambda^{(2)}\pmod{p^3}$. As $v_p(\Lambda_\sigma)\ge3$, $h_p(P'')\equiv2p^2\lambda^{(2)}\pmod{p^3}$, and $h_p(P'')=p^2n^2h_p(e_1)$.
 \end{proof}
 
-For curves with CM by $\Z[i]$ at most one prime is anomalous \cite[Lemma~2.2]{Ban}, so the corollary concerns very few primes for each curve; but it shows that at these primes the regulator is integral and that whether it is a unit is decided by a single entry of the height matrix modulo $p$. To extend the criterion of \cite{Ban} itself to such a prime one would also have to account for the Euler factor $(1-\alpha^{-1})^2$ of the $p$-adic $L$-function, which has valuation $2$ at an anomalous prime; we do not pursue this here.
+Unlike $\lambda$, the quantity $\lambda^{(2)}$ is not determined by $E\bmod p^2$ and the class of the point: it depends on $E\bmod p^3$ and on the point modulo $p^2$, because $\phi_p'$ is divisible by $p$ but not by $p^2$. So the split value of $v_p(\Reg_p)$ is not a function of the reduction alone. The companion paper \cite{Comp} determines $\bar M$ in terms of the first two layers of the filtration of $E(\Qp)$.
+
+\begin{remark}[$\#\Et(\F_5)=10$]
+If $p\mid\#\Et(\Fp)$ and $p\ge5$, the Hasse bound gives $\#\Et(\Fp)\in\{p,2p\}$, and $2p$ occurs only for $p=5$. In that case Theorem~\ref{thm:nonsplit}, Theorem~\ref{thm:R} and Corollary~\ref{cor:R-det} remain true with $\chi$ the $p$-part of the reduction, assumed surjective: replace $nP$ by $2nP$ in the proofs.
+\end{remark}
+
+\section{CM curves}\label{sec:CM}
+
+\begin{proposition}[{\cite[Prop.~2.1(3)]{DW}}]\label{prop:CM}
+If $E$ has complex multiplication and $p\ge5$ is a prime of good ordinary reduction with $a_p=1$, then $E(\Qp)[p]\ne0$.
+\end{proposition}
+
+David and Weston prove this for $p>3$, together with the converse. In outline: $p$ splits in the CM field, so Frobenius lifts to an endomorphism $\pi$ over $\Qp$ with $\pi+\bar\pi=1$ and $\pi\bar\pi=p$; then $\ker(1-\pi)$ is étale of order $p$, Frobenius acts on it trivially, and its points are therefore rational over $\Qp$.
+
+\begin{corollary}\label{cor:CM-rank2}
+Let $E$ have CM, and let $p\ge5$ be an anomalous prime of good ordinary reduction with $p\nmid n$ and \textup{($\iota$)}. Then the height matrix is $p$-integral and $v_p(\Reg_p)\ge\max(r-2,0)$. If $r=2$, then $\Reg_p$ is a unit if and only if $h_p(e_1,e_2)\not\equiv0\pmod p$ for a basis with $\chi(e_2)=0$.
+\end{corollary}
+
+\begin{proof}
+Combine Proposition~\ref{prop:CM}, Theorem~A and Corollary~\ref{cor:Rs-det}.
+\end{proof}
+
+Banwait \cite{Ban} proves that for rank-two CM curves, outside an explicit set of primes, the normalised second Taylor coefficient of the Mazur--Tate--Teitelbaum $p$-adic $L$-function is a unit if and only if the cyclotomic regulator is a unit and $\mathrm{Sha}(E/\Q)[p^\infty]=0$. The excluded set contains the anomalous primes. Corollary~\ref{cor:CM-rank2} describes the regulator at those primes. Extending the criterion of \cite{Ban} to them would also require the Euler factor $(1-\alpha^{-1})^2$, which has valuation $2$ at an anomalous prime; we do not do this here. For curves with CM by $\Z[i]$ there is at most one anomalous prime \cite[Lemma~2.2]{Ban}.
 
 \section{Related work}\label{sec:related}
 
-\emph{The baseline.} The negative valuations at anomalous primes appear in the tables of \cite[\S\S4.2--4.6]{MST} (for instance $37a$ at $p=53$, where the anomaly is noted); the factor $n_{\mathrm{lcm}}=\operatorname{lcm}(\#\Ebar(\Fp),\operatorname{lcm}_\ell c_\ell)$ in the normalisation of \cite{Har} costs $2\vp(n_{\mathrm{lcm}})$ digits of precision at an anomalous prime; and \cite[\S2.2]{Ban} uses non-anomalousness to pass from $E^0(\Q)$ to $E(\Q)$. Integrality of the pairing at non-anomalous primes not dividing the Tamagawa product is used in \cite{BCS}. We did not find Theorem~\ref{thm:A} stated as a proposition, and we do not claim it.
+The negative valuations of $\Reg_p$ at anomalous primes are visible in \cite[\S4]{MST}, for example for $37a$ at $p=53$. In the normalisation of \cite{Har} the factor $\mathrm{lcm}(\#\Et(\Fp),\mathrm{lcm}_\ell c_\ell)$ costs $2v_p(\#\Et(\Fp))$ digits of precision at an anomalous prime. Non-anomalousness is used as a hypothesis in \cite{BCS} and \cite[\S2.2]{Ban}. We have not found Theorem~\ref{thm:baseline} stated explicitly.
 
-\emph{The local criterion.} Proposition~6 is the case $n=1$ of Gross's criterion \cite{Gro90} as quoted in \cite[Thm.~4.1]{LR}, and is contained in \cite[Lemma~3.2]{DW} and \cite[Lemma~4.1]{OY}. The same condition appears in cryptography: the attacks of Semaev, Smart and Satoh--Araki on anomalous curves \cite{Sem98,Sma99,SA98} fail exactly for lifts congruent to the canonical lift modulo $p^2$ \cite{Vol2}, so Corollary~D is the vanishing of a Fermat quotient on the canonical lift. Silverman's and Voloch's elliptic Wieferich conditions \cite{Sil88,Vol} concern $N_pP$ modulo $p^2$ for a rational point and are different. We did not find the criterion in the form $\qp(\phi_p(x_0))=0$.
+The condition $E(\Qp)[p]\ne0$ is studied as \emph{local torsion} by David and Weston \cite{DW}; Gross's tameness criterion \cite{Gro90} and Ozeki--Yoshida \cite{OY} give it in terms of the canonical lift. It also appears in cryptography: the attacks of Semaev, Smart and Satoh--Araki on anomalous curves \cite{Sem98,Sma99,SA98} fail precisely for lifts congruent to the canonical lift modulo $p^2$ \cite{Vol2}. The elliptic Wieferich conditions of Silverman and Voloch \cite{Sil88,Vol} concern a rational point modulo $p^2$ and are different.
 
-\emph{$p$-adic heights.} Wuthrich studied the variation of $p$-adic heights in families and formulated conjectures on the valuation of the $p$-adic regulator \cite{Wut04}; the quantity $e=\vp(t(pP'))$ of Section~\ref{sec:criterion} also appears in \cite{Wut}. We did not find the splitting hypothesis $E(\Qp)[p]\ne0$ in connection with the valuation of $\Reg_p$, nor a statement that the height pairing is $p$-integral exactly under it.
+Wuthrich studied $p$-adic heights in families and the valuation of the $p$-adic regulator \cite{Wut04}. We have not found the condition $E(\Qp)[p]\ne0$ related to the valuation of $\Reg_p$ in the literature.
 
 \appendix
 
-\section{Proof of Proposition 6}\label{app:prop6}
+\section{Proof of Proposition~\ref{prop:criterion}}\label{app:criterion}
 
-The direction $\Leftarrow$ is Corollary~D. For $\Rightarrow$ we show that $\lambda$, viewed as a function on the lifts of $\Ebar$ to $\Z/p^2$, is affine with non-zero slope; since exactly one lift is split (Serre--Tate), and $\lambda$ vanishes there by Corollary~D, it vanishes nowhere else. The arithmetic steps are formalised in Lean (Appendix~\ref{app:lean}); the analytic steps use the Tate parametrisation \cite{ATAEC,Dok}.
+It remains to show that $\lambda=0$ implies $E(\Qp)[p]\ne0$. Work with a short model $y^2=x^3+a_4x+a_6$ and write $\phi_p\equiv f(X)$, $\psi_p\equiv g(X)$ modulo $p$ with $X=x^p$; the roots of $g$ are the $x$-coordinates of $\ker V\smallsetminus\{O\}$.
 
-\emph{(1) An Euler identity.} The polynomial $\phi_p$ is weighted homogeneous of weight $2p^2$ for the weights $(4,6,2)$ on $(a_4,a_6,x)$ in short Weierstrass form $y^2=x^3+a_4x+a_6$. Writing $\phi_p\equiv f(X)$ with $X=x^p$ of weight $2p$ and reducing $4a_4\partial_{a_4}\phi_p+6a_6\partial_{a_6}\phi_p+2x\partial_x\phi_p=2p^2\phi_p$ modulo $p$ gives $4a_4\,\partial_{a_4}f+6a_6\,\partial_{a_6}f=0$ in $\Fp[a_4,a_6][X]$. Hence $a_4\mid\partial_{a_6}f$; put $\tilde u:=(\partial_{a_6}f)/a_4$.
+\emph{Step 1: an Euler identity.} $\phi_p$ is weighted homogeneous of weight $2p^2$ for the weights $4,6,2$ of $a_4,a_6,x$. Reducing Euler's identity modulo $p$, and using that $X=x^p$ has weight $2p\equiv0$, gives $4a_4\,\partial_{a_4}f+6a_6\,\partial_{a_6}f=0$ in $\Fp[a_4,a_6][X]$. Put $\tilde u=(\partial_{a_6}f)/a_4$.
 
-\emph{(2) One slope.} For the deformation $E_s\colon y^2=x^3+(a_4+sp)x+a_6$, Taylor expansion of $\phi_p$ in its coefficients gives $\lambda_s=\lambda_0-s\,B_4/2$, and likewise a slope in the $a_6$ direction. The invariance of $\lambda$ under $(x,y)\mapsto(u^2x,u^3y)$ (under which $\phi_p$ is multiplied by a $p$-th power), applied with $u=1+pt$, relates the two slopes by the identity of (1), so both are multiples of one scalar $\rho(\bar x)=-\tilde u(\bar x)/(4f(\bar x))$; the denominator is non-zero by Vélu's formulas. The family $E_s$ exhausts the deformations of $\Ebar$ over $\Z/p^2$, and exactly one of them is split (Serre--Tate theory). An affine function with non-zero slope has exactly one zero, so it remains to show $\rho\ne0$.
-
-\emph{(3) A dichotomy.} Let $g$ be the polynomial with $\psi_p\equiv g(x^p)$ modulo $p$, of degree $(p-1)/2$, whose roots are the $x$-coordinates of $\ker V\smallsetminus\{O\}$. The resultant $\mathrm{Res}_X(\tilde u,g)$ is weighted homogeneous of weight $12m$ with $m:=(p-1)(p-2)(p+3)/12$. Along the family $E_t\colon y^2=x^3-3x+(2+t)$ over $\bar\F_p((t))$, which has split multiplicative reduction with $v(q)=v(\Delta)=1$, the Tate parametrisation gives $\ker V=\langle q\rangle\bmod q^p$; the roots $\beta_j$ of $g$ satisfy $v(\beta_j-1)=j$ for $1\le j\le(p-1)/2$, and the Newton polygon of $f$ gives $v(f(\beta_j))=j(p-j)$. Since $\tilde u=-\tfrac13\,\frac{d}{dt}f$, one obtains $\operatorname{ord}_\Delta\mathrm{Res}_X(\tilde u,g)\ge\sum_j(j(p-j)-1)=m$, and weighted homogeneity forces $\mathrm{Res}_X(\tilde u,g)=c\,\Delta^m$ with a constant $c\in\Fp$. Thus either $\rho\ne0$ for every ordinary curve over $\bar\F_p$ and every point of $\ker V\smallsetminus\{O\}$, or $\rho=0$ for all of them.
-
-\emph{(4) Which side.} The Frobenius twist of $E_t$ is the member at parameter $t^p$, so $d/dt$ acts only through the Tate parameter and $v(d\beta_j/dt)=j-1$. Among the roots of $f$, the two nearest to $\beta_j$ contribute $1/(1-w)+1/(1-w^{-1})=1$ to $f'(\beta_j)/f(\beta_j)$, which therefore has valuation exactly $-j$ with leading coefficient $p-2j\equiv-2j$. The chain rule gives
+\emph{Step 2: one slope.} For the deformations $y^2=x^3+(a_4+sp)x+a_6$ and $y^2=x^3+a_4x+(a_6+sp)$, Taylor expansion shows that $\lambda$ is affine in $s$. The two slopes are related by Step~1, since $\lambda$ is invariant under $(x,y)\mapsto(u^2x,u^3y)$; both are multiples of
 \[
-12\rho_j=\frac{d}{dt}\log f(\beta_j)-\frac{f'(\beta_j)}{f(\beta_j)}\frac{d\beta_j}{dt}=\frac{-j^2+2j^2}{t}+O(1),
+\rho(\bar x)=-\tilde u(\bar x)/(4f(\bar x)),
 \]
-so the residues $-j^2$ and $-2j^2$ do not cancel, $v(\rho_j)=-1$, $\operatorname{ord}_\Delta\mathrm{Res}_X(\tilde u,g)=m$ exactly, and $c\ne0$. Hence $\rho\ne0$ for every ordinary curve, which proves Proposition~6. \qed
+and $f(\bar x)\ne0$ by Vélu's formulas. These deformations exhaust the lifts of $\Et$ to $\Z/p^2$, and by Serre--Tate theory exactly one lift is split. As $\lambda$ vanishes on it (Corollary~\ref{cor:split-lambda}), it suffices to show $\rho\ne0$.
 
-\section{Formalisation}\label{app:lean}
+\emph{Step 3: all or nothing.} The resultant $\mathrm{Res}_X(\tilde u,g)$ is weighted homogeneous of weight $12m$, $m=(p-1)(p-2)(p+3)/12$. Consider $E_t\colon y^2=x^3-3x+(2+t)$ over $\bar\F_p((t))$, which has split multiplicative reduction with $v(q)=v(\Delta)=1$. By the Tate parametrisation \cite{ATAEC,Dok}, $\ker V=\langle q\rangle\bmod q^p$; the roots $\beta_j$ of $g$ satisfy $v(\beta_j-1)=j$ for $1\le j\le(p-1)/2$, and the Newton polygon of $f$ gives $v(f(\beta_j))=j(p-j)$. Since $\tilde u=-\frac13\frac{d}{dt}f$, we get $\mathrm{ord}_\Delta\mathrm{Res}_X(\tilde u,g)\ge\sum_j(j(p-j)-1)=m$, and weighted homogeneity forces $\mathrm{Res}_X(\tilde u,g)=c\,\Delta^m$ with $c\in\Fp$. So $\rho$ is either non-zero at every ordinary point or identically zero.
 
-The Lean development accompanying this paper consists of eleven files, each checking from \texttt{import Mathlib} alone (Lean~4 \texttt{v4.33.1}, Mathlib commit \texttt{0df444a3}); \texttt{sorry} and \texttt{native\_decide} do not occur and every \texttt{\#print axioms} line is a subset of \{\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}\}. The files and the axiom logs are in the repository \cite{Repo}. Lean checks that the stated propositions follow from their hypotheses; the geometric inputs listed in the introduction are hypotheses of the Lean statements, not conclusions.
+\emph{Step 4: $c\ne0$.} The Frobenius twist of $E_t$ is the member at $t^p$, so $v(d\beta_j/dt)=j-1$. The two roots of $f$ nearest to $\beta_j$ contribute $1/(1-w)+1/(1-w^{-1})=1$ to $f'(\beta_j)/f(\beta_j)$, which therefore has valuation $-j$ and leading coefficient $p-2j\equiv-2j$. By the chain rule,
+\[
+12\rho_j=\frac{d}{dt}\log f(\beta_j)-\frac{f'(\beta_j)}{f(\beta_j)}\,\frac{d\beta_j}{dt}=\frac{-j^2+2j^2}{t}+O(1).
+\]
+The residue is $j^2\ne0$, so $v(\rho_j)=-1$, the bound of Step~3 is an equality, and $c\ne0$. \qed
 
-\begin{center}
-\small
-\begin{longtable}{p{0.32\linewidth}p{0.48\linewidth}p{0.1\linewidth}}
+\section{Lean formalisation}\label{app:lean}
+
+The Lean project for this paper has eleven files, each importing only Mathlib (Lean~4 \texttt{v4.33.1}, Mathlib \texttt{0df444a3}). They contain no \texttt{sorry} and no \texttt{native\_decide}, and all \texttt{\#print axioms} lines are subsets of \{\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}\}. Sources and axiom logs are in \cite{Repo}. File $k$ is \texttt{PadicHeightValuation}$k$\texttt{.lean} (no suffix for $k=1$).
+
+\begin{center}\small
+\begin{longtable}{p{0.3\linewidth}p{0.52\linewidth}p{0.08\linewidth}}
 \toprule
-Statement & Lean declarations & File\\
+Result & Lean declarations & File\\
 \midrule
-Theorem~\ref{thm:A}, Lemma~\ref{lem:decomp} & \lean{norm_det_div_sq_le}, \lean{dvd_pow_sub_one}, \lean{fermatQuot_additive} & 1\\
-Lemma~\ref{lem:local} & \lean{eval_sub_eval_dvd_sq} & 2\\
-Theorem B & \lean{fermatQuot_sub_iff_of_sq_eq_cube}, \lean{sq_sub_cube_dvd_of_dvd_a1}, \lean{sq_sub_cube_dvd_of_sq_dvd_psi}, \lean{dvd_three_mul_sub_two_mul} & 2, 8\\
-Corollaries D, E & \lean{sq_dvd_pow_sub_one_of_isPow}, \lean{sq_dvd_alpha_sub_beta_of_isPow} & 3\\
-Theorem H, Corollary H$'$ & \lean{fermatQuot_scale}, \lean{fermatQuot_scale_zero_iff} & 4\\
-Theorem~\ref{thm:main} (linear algebra) & \lean{regulator_valuation_of_split_anomalous}, \lean{regulator_valuation_of_split_anomalous_iff_split} & 5\\
-Theorem~\ref{thm:main} ($\Rightarrow$ of (i)) & \lean{quadratic_value_mem_of_entries_mem} & 8\\
-Appendix A (2) & \lean{slope_of_rho}, \lean{fermatQuot_deform}, \lean{affine_zero_unique}, \lean{lambda_eq_zero_iff_split} & 5\\
-Appendix A (3) & \lean{weight_split}, \lean{twelve_dvd_weight}, \lean{sum_pole_orders}, \lean{cusp_sum_eq_m}, \lean{eq_C_mul_of_dvd_of_natDegree_eq} & 6\\
-Appendix A (4) & \lean{first_term_residue}, \lean{second_term_leading_ne_zero}, \lean{residues_do_not_cancel} & 7\\
-Theorem S & \lean{exists_shift_dvd_a1}, \lean{add_val_exactly_one}, \lean{not_dvd_of_val_one} & 8\\
-Theorem R, Corollary R$'$ & \lean{bilin_rank_one_of_zero_iff}, \lean{det_conj_diagonal_one_p}, \lean{reg_eq_of_det_eq} & 9\\
-Theorem R$_s$, Corollary R$'_s$, Proposition R$''_s$ & \lean{bilin_eq_of_vanishing_on_hyperplane}, \lean{gram_det_three_eq_zero}, \lean{det_two_dvd_iff}, \lean{pow_dvd_det_of_offdiag_block}, \lean{fermatQuot2_add}, \lean{split_const_eq} & 10\\
-Proposition R$^+$ (counting) & \lean{card_cases}, \lean{two_p_forces_five} & 22\\
+Thm.~\ref{thm:baseline}, Lemma~\ref{lem:decomp} & \lean{norm_det_div_sq_le}, \lean{fermatQuot_additive} & 1\\
+Lemma~\ref{lem:lambda-local} & \lean{eval_sub_eval_dvd_sq} & 2\\
+Thm.~\ref{thm:criterion} & \lean{fermatQuot_sub_iff_of_sq_eq_cube}, \lean{sq_sub_cube_dvd_of_dvd_a1}, \lean{dvd_three_mul_sub_two_mul} & 2, 8\\
+Cor.~\ref{cor:split-lambda}, \ref{cor:split-c} & \lean{sq_dvd_pow_sub_one_of_isPow}, \lean{sq_dvd_alpha_sub_beta_of_isPow} & 3\\
+Prop.~\ref{prop:scaling} & \lean{fermatQuot_scale}, \lean{fermatQuot_scale_zero_iff} & 4\\
+Theorem A & \lean{regulator_valuation_of_split_anomalous}, \lean{regulator_valuation_of_split_anomalous_iff_split}, \lean{quadratic_value_mem_of_entries_mem} & 5, 8\\
+App.~\ref{app:criterion}, Step 2 & \lean{slope_of_rho}, \lean{fermatQuot_deform}, \lean{affine_zero_unique}, \lean{lambda_eq_zero_iff_split} & 5\\
+App.~\ref{app:criterion}, Step 3 & \lean{weight_split}, \lean{sum_pole_orders}, \lean{cusp_sum_eq_m}, \lean{eq_C_mul_of_dvd_of_natDegree_eq} & 6\\
+App.~\ref{app:criterion}, Step 4 & \lean{first_term_residue}, \lean{second_term_leading_ne_zero}, \lean{residues_do_not_cancel} & 7\\
+Thm.~\ref{thm:nonsplit} & \lean{exists_shift_dvd_a1}, \lean{add_val_exactly_one}, \lean{not_dvd_of_val_one} & 8\\
+Lemma~\ref{lem:bilinear}(a), Thm.~\ref{thm:R}, Cor.~\ref{cor:R-det} & \lean{bilin_rank_one_of_zero_iff}, \lean{det_conj_diagonal_one_p}, \lean{reg_eq_of_det_eq} & 9\\
+Lemma~\ref{lem:bilinear}(b), Thm.~\ref{thm:Rs}, Cor.~\ref{cor:Rs-det}, Prop.~\ref{prop:Rs-const} & \lean{bilin_eq_of_vanishing_on_hyperplane}, \lean{gram_det_three_eq_zero}, \lean{det_two_dvd_iff}, \lean{pow_dvd_det_of_offdiag_block}, \lean{fermatQuot2_add}, \lean{split_const_eq} & 10\\
+Remark on $\#\Et(\F_5)=10$ & \lean{card_cases}, \lean{two_p_forces_five} & 22\\
 \bottomrule
 \end{longtable}
 \end{center}
-File $k$ is \texttt{PadicHeightValuation}$k$\texttt{.lean} (file 1 has no suffix).
 
-\section*{Acknowledgements and use of AI}
-The author carried out this research with the assistance of Claude Code (Anthropic). The constructions, proofs, computations and the Lean~4 formalisation were developed with the AI system under the author's direction; independent sessions of the system were used to re-check the Lean development and the computations. The author reviewed the arguments, checked the Lean development and its axiom logs, and takes full responsibility for the content of this paper.
+\section*{Use of AI}
+This research was carried out with the assistance of Claude Code (Anthropic). The constructions, proofs, computations and the Lean formalisation were developed with the AI system under the author's direction, and separate sessions of the system re-checked the Lean development and the computations. The author reviewed the arguments, checked the Lean development and its axiom logs, and takes full responsibility for the content.
 
 \begin{thebibliography}{MTT86}
-
-\bibitem[ATAEC]{ATAEC} J.~H. Silverman, \emph{Advanced Topics in the Arithmetic of Elliptic Curves}, Grad. Texts in Math.\ 151, Springer, 1994.
-\bibitem[Ban]{Ban} B.~S. Banwait, \emph{Second derivatives of $p$-adic $L$-functions and the Shafarevich--Tate group of rank-two CM elliptic curves}, arXiv:2609.08431 (2026).
-\bibitem[BCS]{BCS} J.~S. Balakrishnan, M.~\c{C}iperiani, W.~Stein, \emph{$p$-adic heights of Heegner points and $\Lambda$-adic regulators}, Math. Comp.\ 84 (2015), 923--954.
-\bibitem[BMS]{BMS} J.~S. Balakrishnan, J.~S. M\"uller, W.~A. Stein, \emph{A $p$-adic analogue of the conjecture of Birch and Swinnerton-Dyer for modular abelian varieties}, Math. Comp.\ 85 (2016), 983--1016.
-\bibitem[Comp]{Companion} Y.~Hosomura, \emph{The $p$-adic height at split anomalous primes: the digits of the height and an archimedean threshold}, companion paper (2026).
-\bibitem[Dok]{Dok} T.~Dokchitser, V.~Dokchitser, \emph{Local invariants of isogenous elliptic curves}, Trans. Amer. Math. Soc.\ 367 (2015), 4339--4358.
-\bibitem[Draft]{Draft} Kiichi (Y.~Hosomura), \emph{Integrality of the $p$-adic height pairing at an anomalous prime is equivalent to a point of order $p$ in $E(\Qp)$}, draft v15, computo ergo sum (2026), Zenodo, doi:10.5281/zenodo.23296340.
-\bibitem[DW]{DW} C.~David, T.~Weston, \emph{Local torsion on elliptic curves and the deformation theory of Galois representations}, Math. Res. Lett.\ 15 (2008), 599--611.
-\bibitem[Gro90]{Gro90} B.~H. Gross, \emph{A tameness criterion for Galois representations associated to modular forms (mod $p$)}, Duke Math. J.\ 61 (1990), 445--517.
-\bibitem[Har]{Har} D.~Harvey, \emph{Efficient computation of $p$-adic heights}, LMS J. Comput. Math.\ 11 (2008), 40--59.
-\bibitem[LR]{LR} \'A.~Lozano-Robledo, \emph{Division fields of elliptic curves with minimal ramification}, Rev. Mat. Iberoam.\ 31 (2015), 1311--1332.
-\bibitem[Maz72]{Maz72} B.~Mazur, \emph{Rational points of abelian varieties with values in towers of number fields}, Invent. Math.\ 18 (1972), 183--266.
-\bibitem[MST]{MST} B.~Mazur, W.~Stein, J.~Tate, \emph{Computation of $p$-adic heights and log convergence}, Doc. Math.\ Extra Vol.\ (2006), 577--614.
-\bibitem[MT91]{MT91} B.~Mazur, J.~Tate, \emph{The $p$-adic sigma function}, Duke Math. J.\ 62 (1991), 663--688.
-\bibitem[MTT]{MTT} B.~Mazur, J.~Tate, J.~Teitelbaum, \emph{On $p$-adic analogues of the conjectures of Birch and Swinnerton-Dyer}, Invent. Math.\ 84 (1986), 1--48.
-\bibitem[OY]{OY} Y.~Ozeki, M.~Yoshida, \emph{Fields of definition of $p$-torsion points of elliptic curves and their ramification}, arXiv:2609.06554 (2026).
-\bibitem[Repo]{Repo} Y.~Hosomura, \emph{Lean development and data for this paper}, GitHub repository and Zenodo record (to be inserted).
+\bibitem[ATAEC]{ATAEC} J.~H. Silverman, \emph{Advanced Topics in the Arithmetic of Elliptic Curves}, Grad. Texts in Math.~151, Springer, 1994.
+\bibitem[Ban]{Ban} B.~S. Banwait, \emph{Second derivatives of $p$-adic $L$-functions and the Shafarevich--Tate group of rank-two CM elliptic curves}, arXiv:2609.08431, 2026.
+\bibitem[BCS]{BCS} J.~S. Balakrishnan, M.~\c{C}iperiani, W.~Stein, \emph{$p$-adic heights of Heegner points and $\Lambda$-adic regulators}, Math. Comp.
+\bibitem[BMS]{BMS} J.~S. Balakrishnan, J.~S. M\"uller, W.~A. Stein, \emph{A $p$-adic analogue of the conjecture of Birch and Swinnerton-Dyer for modular abelian varieties}, Math. Comp.
+\bibitem[Comp]{Comp} Y.~Hosomura, \emph{The height matrix modulo $p$ and the $p$-adic digits of the height at split anomalous primes}, companion paper, 2026.
+\bibitem[Dok]{Dok} T.~Dokchitser, V.~Dokchitser, \emph{Local invariants of isogenous elliptic curves}, arXiv:1208.5519.
+\bibitem[Draft]{Draft} Kiichi (Y.~Hosomura), \emph{Integrality of the $p$-adic height pairing at an anomalous prime is equivalent to a point of order $p$ in $E(\Qp)$}, draft v15, computo ergo sum, 2026.
+\bibitem[DW]{DW} C.~David, T.~Weston, \emph{Local torsion on elliptic curves and the deformation theory of Galois representations}, arXiv:math/0701882.
+\bibitem[Gro90]{Gro90} B.~H. Gross, \emph{A tameness criterion for Galois representations associated to modular forms (mod $p$)}, Duke Math. J. 61 (1990), 445--517.
+\bibitem[Har]{Har} D.~Harvey, \emph{Efficient computation of $p$-adic heights}, arXiv:0708.3404.
+\bibitem[LR]{LR} \'A.~Lozano-Robledo, \emph{Division fields of elliptic curves with minimal ramification}, Rev. Mat. Iberoam. 31 (2015), 1311--1332.
+\bibitem[Maz72]{Maz72} B.~Mazur, \emph{Rational points of abelian varieties with values in towers of number fields}, Invent. Math. 18 (1972), 183--266.
+\bibitem[MST]{MST} B.~Mazur, W.~Stein, J.~Tate, \emph{Computation of $p$-adic heights and log convergence}, Doc. Math., Extra Vol. (2006).
+\bibitem[MT91]{MT91} B.~Mazur, J.~Tate, \emph{The $p$-adic sigma function}, Duke Math. J. 62 (1991), 663--688.
+\bibitem[MTT]{MTT} B.~Mazur, J.~Tate, J.~Teitelbaum, \emph{On $p$-adic analogues of the conjectures of Birch and Swinnerton-Dyer}, Invent. Math. 84 (1986), 1--48.
+\bibitem[OY]{OY} Y.~Ozeki, M.~Yoshida, \emph{Fields of definition of $p$-torsion points of elliptic curves and their ramification}, arXiv:2609.06554, 2026.
+\bibitem[Repo]{Repo} Y.~Hosomura, \emph{padic-height-anomalous}, \url{https://github.com/yoshikazuhosomura-sys/padic-height-anomalous}.
 \bibitem[SA98]{SA98} T.~Satoh, K.~Araki, \emph{Fermat quotients and the polynomial time discrete log algorithm for anomalous elliptic curves}, Comment. Math. Univ. St. Pauli 47 (1998), 81--92.
-\bibitem[Sch85]{Sch85} P.~Schneider, \emph{$p$-adic height pairings II}, Invent. Math.\ 79 (1985), 329--374.
-\bibitem[Sem98]{Sem98} I.~A. Semaev, \emph{Evaluation of discrete logarithms in a group of $p$-torsion points of an elliptic curve in characteristic $p$}, Math. Comp.\ 67 (1998), 353--356.
+\bibitem[Sch85]{Sch85} P.~Schneider, \emph{$p$-adic height pairings II}, Invent. Math. 79 (1985), 329--374.
+\bibitem[Sem98]{Sem98} I.~A. Semaev, \emph{Evaluation of discrete logarithms in a group of $p$-torsion points of an elliptic curve in characteristic $p$}, Math. Comp. 67 (1998), 353--356.
 \bibitem[Sil88]{Sil88} J.~H. Silverman, \emph{Wieferich's criterion and the abc-conjecture}, J. Number Theory 30 (1988), 226--237.
 \bibitem[Sma99]{Sma99} N.~P. Smart, \emph{The discrete logarithm problem on elliptic curves of trace one}, J. Cryptology 12 (1999), 193--196.
-\bibitem[SW]{SW} W.~Stein, C.~Wuthrich, \emph{Algorithms for the arithmetic of elliptic curves using Iwasawa theory}, Math. Comp.\ 82 (2013), 1757--1792.
 \bibitem[Vol]{Vol} J.~F. Voloch, \emph{Elliptic Wieferich primes}, J. Number Theory 81 (2000), 205--209.
 \bibitem[Vol2]{Vol2} J.~F. Voloch, \emph{Relating the Smart--Satoh--Araki and Semaev approaches to the discrete logarithm problem on anomalous elliptic curves}, note.
-\bibitem[Wut]{Wut} C.~Wuthrich, \emph{On $p$-adic elliptic logarithms and $p$-adic approximation lattices}, 2006.
-\bibitem[Wut04]{Wut04} C.~Wuthrich, \emph{On $p$-adic heights in families of elliptic curves}, J. London Math. Soc.\ (2) 70 (2004), 23--40.
-
+\bibitem[Wut04]{Wut04} C.~Wuthrich, \emph{On $p$-adic heights in families of elliptic curves}, J. London Math. Soc.
 \end{thebibliography}
 \end{document}

@@ -6,8 +6,8 @@ Papers and Lean 4 formalisation by **Yoshikazu Hosomura**.
 
 | Directory | Title | Status |
 |---|---|---|
-| `papers/paper1-integrality` | *Integrality of the p-adic height pairing at an anomalous prime and points of order p in E(Q_p)* | preprint (arXiv submission in preparation) |
-| `papers/paper2-digits` | *The p-adic height at split anomalous primes: the height matrix modulo p, the digits of the height, and an archimedean threshold* | companion preprint |
+| `papers/paper1-integrality` | *The p-adic height pairing at anomalous primes and points of order p over Q_p* | preprint (arXiv submission in preparation) |
+| `papers/paper2-digits` | *The height matrix modulo p and the p-adic digits of the height at split anomalous primes* | companion preprint |
 
 Main result of paper 1: for an elliptic curve E/Q and a prime p ≥ 5 of good ordinary reduction with #E(F_p) = p, p ∤ ∏c_ℓ, and E(Q)/tors → E(F_p) onto, **every entry of the cyclotomic p-adic height matrix is p-integral if and only if E(Q_p) has a point of order p**; in rank one the non-split value of v_p(Reg_p) is −1 exactly.
 
