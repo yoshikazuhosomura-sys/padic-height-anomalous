@@ -1,5 +1,7 @@
 # p-adic heights at anomalous primes
 
+[![DOI](https://zenodo.org/badge/1441610528.svg)](https://doi.org/10.5281/zenodo.23856616)
+
 Papers and Lean 4 formalisation by **Yoshikazu Hosomura**.
 
 ## Papers

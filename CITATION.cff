@@ -5,3 +5,5 @@ authors:
   - family-names: Hosomura
     given-names: Yoshikazu
 license: Apache-2.0
+doi: 10.5281/zenodo.23856616
+repository-code: https://github.com/yoshikazuhosomura-sys/padic-height-anomalous
