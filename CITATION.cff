@@ -1,0 +1,7 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite the paper."
+title: "p-adic heights at anomalous primes: papers and Lean formalisation"
+authors:
+  - family-names: Hosomura
+    given-names: Yoshikazu
+license: Apache-2.0

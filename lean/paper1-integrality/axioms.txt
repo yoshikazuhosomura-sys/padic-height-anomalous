@@ -1,0 +1,125 @@
+# Excerpt of the original log axioms.txt (2026-10-09 bundle), restricted to the modules of this paper; lines copied verbatim.
+# padic-regulator-valuation (2026-10-09): `#print axioms` output, by module (31 modules, 360 lines).
+# Each module checked alone with `lake env lean`, Lean 4 v4.33.1, Mathlib 0df444a3.
+# Every line is a subset of [propext, Classical.choice, Quot.sound]; sorryAx 0.
+
+## PadicRegulatorValuation.PadicHeightValuation  (5)
+'PadicHeight.dvd_pow_sub_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.fermatQuot_additive' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.norm_det_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.norm_det_div_sq_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.norm_height_div_sq_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+## PadicRegulatorValuation.PadicHeightValuation2  (6)
+'PadicHeight.exists_fermatQuot' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.not_dvd_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.fermatQuot_sub_iff_of_sq_eq_cube' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.eval_sub_eval_dvd_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.dvd_sq_pow_totient' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.fermatQuot_mul_pow_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+## PadicRegulatorValuation.PadicHeightValuation3  (6)
+'PadicHeight.exists_fermatQuot'' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.sq_dvd_one_add_pow_sub' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.sq_dvd_pow_sub_one_of_isPow' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.sq_dvd_pow_sub_one_iff_isPow' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.sq_dvd_pow_sub_one_of_sq_eq_cube' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.sq_dvd_alpha_sub_beta_of_isPow' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+## PadicRegulatorValuation.PadicHeightValuation4  (7)
+'PadicHeight.sq_dvd_one_add_pow_sub' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.sq_dvd_one_add_mul_pow_sub_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.sq_dvd_one_add_sq_mul_pow_sub_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.fermatQuot_scale' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.fermatQuot_scale_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.dvd_det_of_col_dvd' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.pow_succ_dvd_det_of_col' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+## PadicRegulatorValuation.PadicHeightValuation5  (12)
+'PadicHeight.pow_dvd_det_of_forall_dvd' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.pow_sub_two_dvd_det_of_offdiag' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.regulator_valuation_of_split_anomalous' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.regulator_valuation_of_split_anomalous_offdiag' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.sq_dvd_one_add_pow_sub' depends on axioms: [propext, Quot.sound]
+'PadicHeight.fermatQuot_deform' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.affine_zero_unique' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.lambda_eq_zero_iff_split' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.lambda_dichotomy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.exists_unique_lambda_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.slope_of_rho' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.regulator_valuation_of_split_anomalous_iff_split' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+## PadicRegulatorValuation.PadicHeightValuation6  (11)
+'PadicHeight.weight_split' depends on axioms: [propext, Quot.sound]
+'PadicHeight.twelve_dvd_weight' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.three_mul_sum_mul_succ' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.two_mul_sum_succ' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.sum_pole_orders' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.cusp_sum_eq_m' depends on axioms: [propext, Quot.sound]
+'PadicHeight.twelve_m_eq' depends on axioms: [propext, Quot.sound]
+'PadicHeight.mul_compl_le_half_mul_half' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.not_dvd_half_mul_half' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.eq_C_mul_of_dvd_of_natDegree_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.m_values' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+## PadicRegulatorValuation.PadicHeightValuation7  (13)
+'PadicHeight.inv_one_sub_add_inv_one_sub_inv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.nodal_root_ne_one' depends on axioms: [propext, Quot.sound]
+'PadicHeight.twelve_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.first_term_residue' depends on axioms: [propext, Quot.sound]
+'PadicHeight.cast_ne_zero_of_le' depends on axioms: [propext, Quot.sound]
+'PadicHeight.second_term_leading_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.residues_do_not_cancel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.two_mul_sum_Icc_id' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.six_mul_sum_Icc_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.sum_cusp_split' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.twelve_mul_sum_cusp_orders' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.eq_of_le_of_sum_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.card_Icc_cusp' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+## PadicRegulatorValuation.PadicHeightValuation8  (11)
+'PadicHeight.sq_sub_cube_dvd_of_dvd_a1' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.sq_sub_cube_dvd_of_sq_dvd_psi' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.exists_fermatQuot' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.dvd_three_mul_sub_two_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.two_mul_sub_eq_neg' depends on axioms: [propext, Quot.sound]
+'PadicHeight.sub_ne_zero_of_two_mul_eq_three_mul' depends on axioms: [propext, Quot.sound]
+'PadicHeight.sub_eq_neg_half' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.exists_shift_dvd_a1' depends on axioms: [propext, Quot.sound]
+'PadicHeight.add_val_exactly_one' depends on axioms: [propext, Quot.sound]
+'PadicHeight.not_dvd_of_val_one' depends on axioms: [propext]
+'PadicHeight.quadratic_value_mem_of_entries_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+## PadicRegulatorValuation.PadicHeightValuation9  (5)
+'PadicHeight.bilin_rank_one_of_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.not_dvd_of_congr_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.det_conj_diagonal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.det_conj_diagonal_one_p' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.reg_eq_of_det_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+## PadicRegulatorValuation.PadicHeightValuation10  (8)
+'PadicHeight.bilin_eq_of_vanishing_on_hyperplane' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.bilin_zero_of_mem_radical' depends on axioms: [propext, Quot.sound]
+'PadicHeight.gram_det_three_eq_zero' depends on axioms: [propext, Quot.sound]
+'PadicHeight.det_two_dvd_iff' depends on axioms: [propext, Quot.sound]
+'PadicHeight.pow_dvd_det_of_offdiag_block' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.fermatQuot2_add' depends on axioms: [propext]
+'PadicHeight.dvd_three_mul_sub_two_mul_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.split_const_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+## PadicRegulatorValuation.PadicHeightValuation22  (14)
+'PadicHeight.card_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.two_p_forces_five' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.sq_not_dvd' depends on axioms: [propext, Quot.sound]
+'PadicHeight.dvd_of_unit_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.dvd_of_unit_sq_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.sigma_third_coeff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.sigma_fourth_coeff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.padicVal_eq_zero_of_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.log_term_depth_small' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.log_term_depth_five' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.log_term_depth_ne_five' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.log_term_factor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.five_fifth_term' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PadicHeight.cp_one_line' depends on axioms: [propext, Quot.sound]
+
