@@ -38,9 +38,10 @@
 \email{wvbks0@gmail.com}
 \subjclass[2020]{Primary 11G50; Secondary 11G07, 11S31, 11Y40}
 \keywords{$p$-adic height, $p$-adic regulator, anomalous prime, $p$-adic sigma function, division polynomial, Fermat quotient}
+\date{6 November 2026 (version 1.0.4)}
 
 \begin{abstract}
-Let $E/\Q$ be an elliptic curve and $p\ge5$ a prime of good ordinary reduction with $\#\Et(\Fp)=p$ and $E(\Qp)[p]\ne0$. In a previous paper we showed that, under mild hypotheses, the cyclotomic $p$-adic height matrix of $E$ is then $p$-integral and has rank at most two modulo $p$. Here we determine it further. Modulo $p$ the matrix is given by two local constants and two homomorphisms $\chi,\gamma$ defined by the first two layers of the filtration of $E(\Qp)$. The second $p$-adic digit of the height involves the Fermat quotient of the denominator of the point, so the description in terms of the filtration does not continue. We show that all digits are truncations of a single identity involving two Iwasawa logarithms and an even power series in the formal logarithm whose coefficients are explicit invariants of $E$; this determines at which digit each invariant appears, and it shows that $\min(v_p(\Reg_p),k)$ in rank one is a function of $k$ layers of the filtration and $k-1$ digits of one Fermat quotient, and of no smaller set of data. A non-degeneracy condition used in these results, $v_p(\phi_p'(x(T)))=1$ at the points of order $p$, is proved for all $p\ge5$. Finally, a point deep in the formal filtration has large height; this gives an archimedean sufficient condition for the regulator to be a unit in rank two, which accounts for the observed frequency of non-unit regulators in our computations.
+Let $E/\Q$ be an elliptic curve and $p\ge5$ a prime of good ordinary reduction with $\#\Et(\Fp)=p$ and $E(\Qp)[p]\ne0$. In a previous paper we showed that, under mild hypotheses, the cyclotomic $p$-adic height matrix of $E$ is then $p$-integral and has rank at most two modulo $p$. Here we determine it further. Modulo $p$ the matrix is given by two local constants and two homomorphisms $\chi,\gamma$ defined by the first two layers of the filtration of $E(\Qp)$. The second $p$-adic digit of the height involves the Fermat quotient of the denominator of the point, so the description in terms of the filtration does not continue. We show that all digits are truncations of a single identity involving two Iwasawa logarithms and an even power series in the formal logarithm whose coefficients are explicit invariants of $E$; this determines, in terms of their valuations, the digit at which each invariant appears, and it shows that $\min(v_p(\Reg_p),k)$ in rank one is a function of $k$ layers of the filtration and $k-1$ digits of one Fermat quotient, and of no smaller set of data. A non-degeneracy condition used in these results, $v_p(\phi_p'(x(T)))=1$ at the points of order $p$, is proved for all $p\ge5$. Finally, a point deep in the formal filtration has large height; this gives an archimedean sufficient condition for the regulator to be a unit in rank two, which accounts, in expectation, for the observed shortfall of non-unit regulators relative to the frequency $1/p$ in our computations.
 \end{abstract}
 
 \maketitle
@@ -59,7 +60,7 @@ There are constants $\lambda_{T,1},B_0\in\Fp$, depending only on $E/\Qp$ and on 
 \]
 \end{theorem}
 
-So $\Mb$ has rank two exactly when $(\chi,\gamma)\colon\Lam\to\Fp^2$ is surjective, and in rank $r\ge3$ the regulator has valuation exactly $r-2$ if and only if $p^{-1}h_p$ is non-degenerate modulo $p$ on $\Lam\cap E_2(\Qp)$ (Corollary~\ref{cor:K}).
+So $\Mb$ has rank two exactly when $(\chi,\gamma)\colon\Lam\to\Fp^2$ is surjective, and in rank $r\ge3$ the regulator has valuation exactly $r-2$ if and only if $p^{-1}h_p$ is non-degenerate modulo $p$ on $(\Lam\cap E_2(\Qp))/p\Lam$ (Corollary~\ref{cor:K}).
 
 \subsection{The second digit and beyond}
 One might expect $v_p(\Reg_p)\ge2$ to be governed in the same way by the image of $\Lam$ in $E(\Qp)/E_3(\Qp)$. This is false. For $P$ with $\chi(P)\ne0$, write $x(nP)=a/d'^2$ in lowest terms and let $\Theta$ be the second Fermat quotient of $\phi_p(x(nP))$ (Section~\ref{sec:second}). Then
@@ -78,10 +79,13 @@ where $\cL(z)=\log\bigl(x\,\sigma_p(t)^2\bigr)$ is an \emph{even} power series i
 Several of these statements need $v_p(\phi_p'(x(T)))=1$ at the points $T$ of order $p$. We prove that this holds for every $p\ge5$ and every ordinary curve over $\bar\F_p$ (Theorem~\ref{thm:ND}). The proof identifies a resultant of division polynomials modulo $p$ with a power of the discriminant times an explicit non-zero constant.
 
 \subsection{An archimedean input}
-A rational point in $E_k(\Qp)$ has naive height at least $2k\log p$. Hence, if some non-zero point of $\Lam\cap E_1(\Qp)$ has canonical height below $4\log p+\beta(E)$, where $\beta(E)$ is a lower bound for the local heights away from $p$, then $(\chi,\gamma)$ is surjective and, in rank two, $\Reg_p$ is a unit (Proposition~\ref{prop:canonical}). In our computations on curves of rank two this condition accounts, in expectation, for the whole observed frequency of non-unit regulators (Section~\ref{sec:arch}).
+A rational point in $E_k(\Qp)$ has naive height at least $2k\log p$. Hence, if some non-zero point of $\Lam\cap E_1(\Qp)$ has canonical height below $4\log p+\beta(E)$, where $\beta(E)$ is a lower bound for the local heights away from $p$, then $(\chi,\gamma)$ is surjective and, in rank two, $\Reg_p$ is a unit (Proposition~\ref{prop:canonical}). In our computations on curves of rank two this condition accounts, in expectation, for the whole observed shortfall of non-unit regulators relative to the frequency $1/p$ (Section~\ref{sec:arch}).
 
 \subsection*{Conventions}
 Results are proved on paper unless stated otherwise. The arithmetic steps are formalised in Lean~4 (Appendix~\ref{app:lean}); statements marked \emph{[computation]} were checked with PARI/GP on curves from Cremona's tables and are not proved. This paper and \cite{P1} are a revision of an earlier draft by the author \cite{Draft}; Appendix~\ref{app:labels} lists the corresponding labels.
+
+\subsection*{Related work}
+The nearest published work we know to Proposition~\ref{prop:mu} is \cite{BG}, on the universal $p$-adic sigma function. Theorem~\ref{thm:Nstar} and Propositions~\ref{prop:psi} and \ref{prop:S1} may well be known.
 
 \section{Setting}\label{sec:setting}
 
@@ -103,12 +107,12 @@ Throughout, unless stated otherwise:
 We write $D=E(\Qp)[p]$, fix $T_0\in D$ whose reduction $G$ generates $\Et(\Fp)$, and let $\chi$ be the discrete logarithm of the reduction with respect to $G$. For a class $\bar x\in\Et(\Fp)\smallsetminus\{O\}$ let $T(\bar x)\in D$ be the unique point above it.
 
 \subsection{Results from \cite{P1}}\label{sec:recall}
-We use: (a) for $P$ reducing to $O$ and satisfying the condition at bad primes, $h_p(P)\in2p\Zp$; (b) the decomposition $h_p(P)=2\log(\sigma_p(t)/t)+2\log(\alpha/\beta)$; (c) for $P'$ with reduction of order $p$, $v_p(t(pP'))\ge2$ in the split case; (d) $\lambda(\bar x)=\frac12\qp(\phi_p(x))=0$ for all lifts $x$ of all $\bar x\ne O$ in the split case, so $\phi_p(x)^{p-1}\in1+p^2\Zp$; (e) $\Mb$ vanishes on $\ker\chi\times\ker\chi$, and $h_p(e_1)\equiv2\lambda^{(2)}/n^2\pmod p$ for $\chi(e_1)\ne0$, where $\lambda^{(2)}=\frac12q^{(2)}(\phi_p(x(ne_1)))$; (f) for $p\nmid m$ and $Q\in E(\Zp)$ with non-zero reduction, $q^{(2)}(\phi_p(x(mQ)))=m^2q^{(2)}(\phi_p(x(Q)))$, proved as \cite[Prop.~6.1]{P1} with $\delta\in p^4\Zp$. We also use the formal-part bound $v_p(\log(\sigma_p(t)/t))\ge\min(e+v_p(a_1),2e)$, $e=v_p(t)$.
+We use: (a) for $P$ reducing to $O$ and satisfying the condition at bad primes, $h_p(P)\in2p\Zp$; (b) the decomposition $h_p(P)=2\log(\sigma_p(t)/t)+2\log(\alpha/\beta)$; (c) for $P'$ with reduction of order $p$, $v_p(t(pP'))\ge2$ in the split case; (d) $\lambda(\bar x)=\frac12\qp(\phi_p(x))=0$ for all lifts $x$ of all $\bar x\ne O$ in the split case, so $\phi_p(x)^{p-1}\in1+p^2\Zp$; (e) $\Mb$ vanishes on $\ker\chi\times\ker\chi$, and $h_p(e_1)\equiv2\lambda^{(2)}/n^2\pmod p$ for $\chi(e_1)\ne0$, where $\lambda^{(2)}=\frac12q^{(2)}(\phi_p(x(ne_1)))$; (f) for $p\nmid m$ and $Q\in E(\Zp)$ with non-zero reduction, $q^{(2)}(\phi_p(x(mQ)))=m^2q^{(2)}(\phi_p(x(Q)))$, proved as \cite[Prop.~6.1]{P1}: there $\delta\in p^4\Zp$ since $e\ge2$, and the factor $\psi_m(Q)^{2p^2}$, a $p^2$-th power of a unit, has trivial $q^{(2)}$. We also use the formal-part bound $v_p(\log(\sigma_p(t)/t))\ge\min(e+v_p(a_1),2e)$, $e=v_p(t)$.
 
 \section{The height matrix modulo \texorpdfstring{$p$}{p}}\label{sec:K}
 
 \subsection{Two homomorphisms}
-By (c) of \S\ref{sec:recall}, $D\cap E_1(\Qp)=0$, and $D\to\Et(\Fp)$ is an isomorphism. Hence $E(\Qp)=D\oplus E_1(\Qp)$. For $Q\in E(\Zp)$ write $Q=\chi(Q)T_0+R$ with $R\in E_1(\Qp)$ and put
+Since $E_1(\Qp)$ is torsion-free, $D\cap E_1(\Qp)=0$, and $D\to\Et(\Fp)$ is an isomorphism. Hence $E(\Qp)=D\oplus E_1(\Qp)$. For $Q\in E(\Zp)$ write $Q=\chi(Q)T_0+R$ with $R\in E_1(\Qp)$ and put
 \[
 \gamma(Q)=t(R)/p\bmod p .
 \]
@@ -183,15 +187,15 @@ For $\chi(P)=0$ both sides vanish modulo $p$ by (a). Polarise.
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item $\operatorname{rank}\Mb=2$ if and only if $(\chi,\gamma)\colon\Lam\to\Fp^2$ is surjective.
 \item If $r=1$, then $v_p(\Reg_p)\ge1$ if and only if $\gamma(e_1)/\chi(e_1)=-\lambda_{T,1}/B_0$.
-\item Suppose $(\chi,\gamma)$ is surjective, let $\Lam_1=\Lam\cap E_2(\Qp)$ \textup{(}of rank $r-2$\textup{)} and $\widehat C$ the Gram matrix of $p^{-1}h_p$ on $\Lam_1$. Then $v_p(\Reg_p)=r-2$ if and only if $\det\widehat C\not\equiv0\pmod p$.
+\item Suppose $(\chi,\gamma)$ is surjective, take a basis $e_1,\dots,e_r$ of $\Lam\otimes\Zp$ with $\chi(e_1)=1$, $\chi(e_2)=0\ne\gamma(e_2)$ and $e_3,\dots,e_r\in E_2(\Qp)$, and let $\widehat C$ be the Gram matrix of $p^{-1}h_p$ on $e_3,\dots,e_r$. Then $v_p(\Reg_p)=r-2$ if and only if $\det\widehat C\not\equiv0\pmod p$.
 \end{enumerate}
 \end{corollary}
 
 \begin{proof}
-(i) and (ii) are linear algebra over $\Fp$. For (iii) choose a basis $e_1$ with $\chi(e_1)=1$, $e_2\in\ker\chi$ with $\gamma(e_2)\ne0$, and a basis of $\Lam_1$. By Theorem~\ref{thm:K}, $M$ has the shape $\left(\begin{smallmatrix}a&b&0\\ b&pC_{22}&p*\\ 0&p*&p\widehat C\end{smallmatrix}\right)$ with $b$ a unit, and the Schur complement of the leading $2\times2$ block is $p\widehat C$ modulo $p^2$.
+(i) and (ii) are linear algebra over $\Fp$. For (iii), such a basis exists because $(\chi,\gamma)$ factors through $\Lam/p\Lam$ and $\ker\chi\cap\ker\gamma=E_2(\Qp)$. By Theorem~\ref{thm:K}, $M$ has the shape $\left(\begin{smallmatrix}a&b&0\\ b&pC_{22}&p*\\ 0&p*&p\widehat C\end{smallmatrix}\right)$ with $b$ a unit, and the Schur complement of the leading $2\times2$ block is $p\widehat C$ modulo $p^2$.
 \end{proof}
 
-Thus the deficit $r-2$ comes from the two layers $\chi$ and $\gamma$, and what remains in rank $r\ge3$ is a non-degeneracy of $p^{-1}h_p$ one layer deeper. [Computation: the exact formula $v_p(\Reg_p)=(r-2)+v_p(\det\widehat C)$ fails in a few boxes where $\det\widehat C$ is not a unit.]
+Thus the deficit $r-2$ comes from the two layers $\chi$ and $\gamma$, and what remains in rank $r\ge3$ is a non-degeneracy of $p^{-1}h_p$ one layer deeper. [Computation: the exact formula $v_p(\Reg_p)=(r-2)+v_p(\det\widehat C)$ fails in one of the $48$ boxes of rank three and conductor at most $400000$ tested, $310329c1$ at $p=5$.]
 
 \section{The second digit}\label{sec:second}
 
@@ -270,7 +274,7 @@ As a power series in $z$, $\cL(z)=\sum_{m\ge1}\mu_{2m}z^{2m}$ has no odd terms, 
 \[
 \mu_2=-c,\qquad \mu_4=-\frac{b_4}{12},\qquad \mu_6=-\frac{b_2b_4}{360}-\frac{b_6}{30}.
 \]
-Moreover $\mu_{2m}\in\Z[1/(2m+2)!][b_2,b_4,b_6,E_2]$, and $E_2$ occurs only in $\mu_2$.
+Moreover $\mu_{2m}\in\Z[1/(2m+2)!][b_2,b_4,b_6,E_2]$, $E_2$ occurs only in $\mu_2$, and $v_p(\mu_{2m})\ge-v_p((2m)!)$; in particular $c\in\Zp$.
 \end{proposition}
 
 \begin{proof}
@@ -278,7 +282,9 @@ The defining equation of $\sigma_p$ is $(d/dz)^2\log\sigma_p=-(x+c)$, and \[x+b_
 \[
 2\log\frac{\sigma_p(z)}z=-(a+c)z^2-2\sum_{k\ge1}\frac{\pi_kz^{2k+2}}{(2k+1)(2k+2)} .
 \]
-Also $x(z)z^2=1+az^2+\pi_1z^4+\pi_2z^6+\cdots$ is even, so $\cL=\log(xz^2)+2\log(\sigma_p/z)$ is even. Comparing coefficients: at $z^2$, $a-(a+c)=-c$. At $z^4$, $\pi_1-a^2/2-\pi_1/6=(c_4-b_2^2)/288=-b_4/12$, using $c_4=b_2^2-24b_4$; here $E_2$ cancels. At $z^6$, $\pi_2-a\pi_1+a^3/3-\pi_2/15$; substituting $c_4$ and $c_6=-b_2^3+36b_2b_4-216b_6$, the terms in $b_2^3$ cancel and $\mu_6=-b_2b_4/360-b_6/30$. The denominators come from $\pi_k$, which has denominator dividing $(2k+2)!$, and from the factor $(2k+1)(2k+2)$.
+Also $x(z)z^2=1+az^2+\pi_1z^4+\pi_2z^6+\cdots$ is even, so $\cL=\log(xz^2)+2\log(\sigma_p/z)$ is even. Comparing coefficients: at $z^2$, $a-(a+c)=-c$. At $z^4$, $\pi_1-a^2/2-\pi_1/6=(c_4-b_2^2)/288=-b_4/12$, using $c_4=b_2^2-24b_4$; here $E_2$ cancels. At $z^6$, $\pi_2-a\pi_1+a^3/3-\pi_2/15$; substituting $c_4$ and $c_6=-b_2^3+36b_2b_4-216b_6$, the terms in $b_2^3$ cancel and $\mu_6=-b_2b_4/360-b_6/30$. The coefficient of $z^{2m}$ involves $\pi_k$ only for $k\le m-1$, and $\pi_k\in\Z[1/(2k+3)!][c_4,c_6]$ by the recursion for the Laurent coefficients of $\wp$; the other denominators are the factors $(2k+1)(2k+2)$ and the $j\le m$ from the $j$-th term of $\log(1+\cdots)$. So only primes $\le2m+1$ occur.
+
+For the valuation, let $\mathcal H$ be the set of series $\sum_na_nz^n/n!$ with $a_n\in\Zp$. It is a ring, stable under $d/dz$ and $\int_0^z$; so for $w\in\mathcal H$ with $w(0)=0$ also $w^n/n!=\int_0^zw'\,w^{n-1}/(n-1)!$, $g(w)$ for $g\in\Zp[[T]]$, and $\log(1+w)=\sum_{n\ge1}(-1)^{n-1}(n-1)!\,w^n/n!$ lie in $\mathcal H$. The parameter $t$ lies in $\mathcal H$: $dt/dz=(1+a_1t+\cdots)^{-1}\in\Zp[[t]]$, so by induction every derivative of $t$ at $z=0$ is in $\Zp$. As $xt^2$ and $\sigma_p(t)/t$ lie in $1+t\Zp[[t]]$, $\cL=\log\bigl(xt^2(\sigma_p(t)/t)^2\bigr)\in\mathcal H$, that is, $(2m)!\,\mu_{2m}\in\Zp$.
 \end{proof}
 
 The denominators are not bounded independently of $m$: $\mu_6$ has a $5$, $\mu_8$ a $7$, and $\mu_{14}$ an $11$ and a $13$.
@@ -288,7 +294,7 @@ In Theorem~\ref{thm:Nstar}, the $j$-th term of $p^{-2}\log(1+p^2\Theta)$ has val
 \end{proposition}
 
 \begin{proof}
-Term-by-term valuation of the logarithm series, using $v_p(z)=e$; the last sentence uses $v_5(\mu_6)=-1$ and $v_p(\mu_6)\ge0$ for $p\ge7$. The series converges because $v_p(\mu_{2m})\ge-(2m+2)/(p-1)$.
+Term-by-term valuation of the logarithm series, using $v_p(z)=e$; the last sentence uses $v_5(\mu_6)=-1$ and $v_p(\mu_6)\ge0$ for $p\ge7$. The series converges because $v_p(\mu_{2m})\ge-v_p((2m)!)>-2m/(p-1)$ (Proposition~\ref{prop:mu}).
 \end{proof}
 
 \begin{lemma}\label{lem:coords}
@@ -352,7 +358,7 @@ Hence, with $F$ fixed, the two sides of Theorem~\ref{thm:Nstar} at $t_1$ and $t_
 \end{proposition}
 
 \begin{proof}
-The Taylor expansion of $\log_E$ at $t_1$ has $k$-th term of valuation at least $kj-v_p(k)$, and the first term has valuation exactly $j$; multiply by $p$. For $m\ge1$, $z'^{2m}-z^{2m}$ has valuation at least $(1+j)+(2m-1)\min(e,1+j)\ge(1+j)+2(2m-1)$. With $v_p(\mu_{2m})\ge-(m+1)/2$, all terms of $p^{-2}\Delta\cL$ have valuation at least $j+1$. The $\Theta$-side moves at valuation $j-1$ by Theorem~\ref{thm:Gprime}, and the factor $(1-p)^{-1}$ and the bracket are units.
+The Taylor expansion of $\log_E$ at $t_1$ has $k$-th term of valuation at least $kj-v_p(k)$, and the first term has valuation exactly $j$; multiply by $p$. For $m\ge1$, $z'^{2m}-z^{2m}$ has valuation at least $(1+j)+(2m-1)\min(e,1+j)\ge(1+j)+2(2m-1)$. Since $v_p(\mu_{2m})\ge-v_p((2m)!)\ge4-4m$ (Proposition~\ref{prop:mu}), all terms of $p^{-2}\Delta\cL$ have valuation at least $j+1$. The $\Theta$-side moves at valuation $j-1$ by Theorem~\ref{thm:Gprime}, and the factor $(1-p)^{-1}$ and the bracket are units.
 \end{proof}
 
 \begin{theorem}\label{thm:Gk}
@@ -362,6 +368,8 @@ Assume \textup{(H)} and $r=1$. Fix $E$, $p$, $T_0$ and the local invariants. The
 \]
 and of no smaller set of data: changing $\gamma_k$, or the $(k-1)$-st digit of $F$, alone can change $\min(v_p(\Reg_p),k)$.
 \end{theorem}
+
+Here $\min(v_p(\Reg_p),k)$ is read as a function on the parameters $t_1\bmod p^{k+1}$ and $F\bmod p^{k-1}$ of Theorem~\ref{thm:Nstar}, with $E$, $p$, $T_0$ and the local invariants fixed; the necessity is a statement about this function.
 
 \begin{proof}
 \emph{Sufficiency.} By Theorem~\ref{thm:Nstar}, $v_p(\Reg_p)\ge k$ is a condition on $\Theta\bmod p^k$, on $F\bmod p^{k-1}$ and on $p^{-2}\cL$ modulo $p^k$. By Theorem~\ref{thm:Gprime}, $\Theta\bmod p^k$ depends on $t_1\bmod p^{k+1}$, and by Proposition~\ref{prop:layer} so does $p^{-2}\cL$ modulo $p^k$.
@@ -384,16 +392,16 @@ Substitute into Corollary~\ref{cor:N34}.
 \end{proof}
 
 \begin{remark}
-On the rational points of a single curve the two kinds of data are related. Along $P+p^a\Lam$ the digit of $F$ at $p^{a-1}$ is determined by $\chi$, $n^2h_p(P)\bmod p$ and the homomorphism $Z\mapsto t(pnZ)/p^2\bmod p$, and $F\bmod p^k$ is determined by $n^2h_p(P)\bmod p^{k+1}$ and $t_1\bmod p^{k+2}$, by inverting Theorem~\ref{thm:Nstar}. Nevertheless both kinds of necessity in Theorem~\ref{thm:Gk} are realised by rational points: [computation] on the rank-two curve $4407a1$ at $p=5$, read point by point.
+On the rational points of a single curve the two kinds of data are related. Along $P+p^a\Lam$ the digit of $F$ at $p^{a-1}$ is determined by $\chi$, $n^2h_p(P)\bmod p$ and the homomorphism $Z\mapsto t(pnZ)/p^2\bmod p$ \cite[Prop.~21]{Draft}, and $F\bmod p^k$ is determined by $n^2h_p(P)\bmod p^{k+1}$ and $t_1\bmod p^{k+2}$, by inverting Theorem~\ref{thm:Nstar} \cite[Prop.~22]{Draft}. Nevertheless both kinds of necessity in Theorem~\ref{thm:Gk} are realised by rational points: [computation] on the rank-two curve $4407a1$ at $p=5$, read point by point.
 \end{remark}
 
 \section{The non-degeneracy}\label{sec:ND}
 
-We prove that $s(\bar x)\ne0$, equivalently $v_p(\phi_p'(x(T)))=1$, for all $p\ge5$. Work over $\bar\F_p$ with $\Et\colon y^2=u(x)=x^3+a_4x+a_6$ and $\Delta_0=4a_4^3+27a_6^2$, weights $2,4,6$ for $x,a_4,a_6$. Write $\psi_p\equiv\Psi(x^p)$ with $\deg\Psi=n_p=(p-1)/2$ and leading coefficient the Hasse invariant $A$; $h=\Psi/A$; $\phi_p\equiv\Phi(x^p)$; $w^{(p)}(X)=X^3+a_4^pX+a_6^p$. Then $h$ is the kernel polynomial of the Verschiebung $V$ and $\Phi/(A^2h^2)$ is its $x$-coordinate. Let $K=\psi_p'/p\bmod p$ and $S_1=(\phi_p-4uK^2)/\psi_p$; then the non-degeneracy at $\bar x$ is equivalent to $S_1(\bar x)\ne0$. Let
+We prove that $s(\bar x)\ne0$, equivalently $v_p(\phi_p'(x(T)))=1$, for all $p\ge5$. Work over $\bar\F_p$ with $\Et\colon y^2=u(x)=x^3+a_4x+a_6$ and $\Delta_0=4a_4^3+27a_6^2$, weights $2,4,6$ for $x,a_4,a_6$. Write $\psi_p\equiv\Psi(x^p)$ with $\deg\Psi=n_p=(p-1)/2$ and leading coefficient the Hasse invariant $A$; $h=\Psi/A$; $\phi_p\equiv\Phi(x^p)$; $w^{(p)}(X)=X^3+a_4^pX+a_6^p$. Then $h$ is the kernel polynomial of the Verschiebung $V$ and $\Phi/(A^2h^2)$ is its $x$-coordinate. Let $K=\psi_p'/p\bmod p$ and $S_1=(\phi_p-4uK^2)/\psi_p$; by Lemma~\ref{lem:ND-S1} the non-degeneracy at $\bar x$ is equivalent to $S_1(\bar x)\ne0$. Let
 \[
 \mathcal D=-6a_6\,\partial_{a_4}+\tfrac43a_4^2\,\partial_{a_6},
 \]
-which raises weight by $2$, kills $\Delta_0$, and acts on $q$-expansions of forms of weight divisible by $p-1$ as $-q\,d/dq$.
+which raises weight by $2$, kills $\Delta_0$, and acts on $q$-expansions of forms of weight $k$ as $-q\,d/dq+\frac k{12}E_2$, hence as $-q\,d/dq$ when $p\mid k$.
 
 \begin{lemma}\label{lem:isog}
 Let $\lambda\colon E'\to E$ be separable of odd degree with kernel polynomial $h$, $x\circ\lambda=P/h^2$, $y\circ\lambda=y'\Omega/h^3$, $\lambda^*\omega_E=c\,\omega_{E'}$. At every simple root $\xi$ of $h$ with $P(\xi)\ne0$,
@@ -406,16 +414,30 @@ c^2P(\xi)=4u_{E'}(\xi)h'(\xi)^2,\qquad c^2P'(\xi)=2\bigl[u_{E'}(h')^2\bigr]'(\xi
 Clearing denominators in $\omega_E=dx/2y$ gives $P'h-2Ph'=c\Omega$ and $u_{E'}\Omega^2=P^3+a_4Ph^4+a_6h^6$. Evaluate at $\xi$, and differentiate once.
 \end{proof}
 
+The numerator $P$ has leading coefficient $c^{-2}$. For $\lambda=V$ we have $P=\Phi/A^2$ with $\Phi$ monic, so $c^2=A^2$, and the lemma gives $\Phi(\xi)=4w^{(p)}(\xi)h'(\xi)^2$ and $\Phi'(\xi)=2[w^{(p)}(h')^2]'(\xi)$ at the roots of $h$.
+
 \begin{proposition}\label{prop:psi}
 $A\cdot(\psi_p'/p)=u^{(p-1)/2}\,(d\Psi/dX)(x^p)$ in $\Fp[a_4,a_6][x]$.
 \end{proposition}
 
 \begin{proof}
-It suffices to check this at ordinary points. Lift $\Et$ to $E$ over a complete discrete valuation ring with $v(p)=1$. Let $C=\widehat E[p]$ be the canonical subgroup. Its non-zero points have $v(x)=-2/(p-1)$, so $\psi_p=\lambda MN$ with $M=p\cdot(\text{kernel polynomial of }C)$, $M\equiv A_0$ a constant modulo $p$, and $N$ the factor for the other points. Write $\pi\colon E\to E/C$ and $\hat\pi$ with $\hat\pi\circ\pi=[p]$, $x\circ\pi=P_\pi/M^2$, $y\circ\pi=y\,\Omega_\pi/M^3$ and $c_\pi=p\varpi$; then $x\circ\pi\equiv x^p$ and $\Omega_\pi/M^3\equiv u^{n_p}$ modulo $p$. Up to a unit, $N=M^{2n_p}h^*(x\circ\pi)$ with $h^*\equiv h$. Differentiating and using $2n_p+1=p$,
+It suffices to check this at ordinary points. Lift $\Et$ to $E$ over a complete discrete valuation ring with $v(p)=1$. Let $C=\widehat E[p]$ be the canonical subgroup \cite{Kat73}. Its non-zero points have $v(x)=-2/(p-1)$, so $\psi_p=\lambda MN$ with $M=p\cdot(\text{kernel polynomial of }C)$, $M\equiv A_0$ a constant modulo $p$, and $N$ the factor for the other points. Write $\pi\colon E\to E/C$ and $\hat\pi$ with $\hat\pi\circ\pi=[p]$, $x\circ\pi=P_\pi/M^2$, $y\circ\pi=y\,\Omega_\pi/M^3$ and $c_\pi=p\varpi$; then $x\circ\pi\equiv x^p$ and $\Omega_\pi/M^3\equiv u^{n_p}$ modulo $p$. Up to a unit, $N=M^{2n_p}h^*(x\circ\pi)$ with $h^*\equiv h$. Differentiating and using $2n_p+1=p$,
 \[
 K=\lambda M^{2n_p}M'h^*(x\circ\pi)+\lambda\varpi M^{2n_p-2}(h^*)'(x\circ\pi)\,\Omega_\pi,
 \]
 Modulo $p$ the first term vanishes since $M'\equiv0$, and the second is $\kappa\,u^{n_p}h'(x^p)$ with $\kappa\in\F^\times$; comparing leading coefficients gives $\kappa=1$.
+\end{proof}
+
+\begin{lemma}\label{lem:ND-S1}
+Let $\Et$ be ordinary and $\bar x$ a root of $\psi_p\bmod p$. Then $\psi_p\bmod p$ divides $\phi_p-4uK^2$, $K(\bar x)\ne0$, and
+\[
+G_\phi(\bar x)=-K(\bar x)\,S_1(\bar x).
+\]
+Hence the non-degeneracy at $\bar x$ is equivalent to $S_1(\bar x)\ne0$.
+\end{lemma}
+
+\begin{proof}
+Lift $\Et$ and write $\psi_p=\lambda MN$ as in the proof of Proposition~\ref{prop:psi}; we use the letters $K$ and $G_\phi$ also for the integral polynomials $\psi_p'/p$ and $\phi_p'/p$. The roots $\xi$ of $N$ are simple and integral, and they reduce to the roots of $\psi_p\bmod p$. As $N\bmod p$ is a polynomial in $x^p$, $N'=pN_1$ with $N_1$ integral. Lemma~\ref{lem:isog} for $[p]$, with $c=p$, kernel polynomial $\psi_p/p$ and $P=\phi_p/p^2$, gives $\phi_p(\xi)=4u(\xi)K(\xi)^2$ and $\phi_p'(\xi)=2(uK^2)'(\xi)$. By the first, $F=\phi_p-4uK^2$ is $NF_2$ with $F_2$ integral, so $S_1=F_2/(\lambda A_0)\bmod p$. By the second, $F'(\xi)=-pG_\phi(\xi)$. Differentiating $F=NF_2$ and $\psi_p=\lambda MN$ at $\xi$ gives $-pG_\phi(\xi)=pN_1(\xi)F_2(\xi)$ and $pK(\xi)=\lambda M(\xi)\,pN_1(\xi)$. Dividing by $p$ and reducing, with $M\equiv A_0$, gives $G_\phi(\bar x)=-N_1(\bar x)F_2(\bar x)$ and $K(\bar x)=\lambda A_0N_1(\bar x)$, hence the identity. Finally $K(\bar x)\ne0$ by Proposition~\ref{prop:psi}, since $u(\bar x)\ne0$ and $h$ has simple roots.
 \end{proof}
 
 \begin{proposition}\label{prop:S1}
@@ -423,11 +445,23 @@ $\phi_p\equiv4u(\psi_p'/p)^2+\mathcal D(\psi_p^2)\pmod p$; equivalently $S_1=2\m
 \end{proposition}
 
 \begin{proof}
-By Proposition~\ref{prop:psi} the claim is $\Phi-4w^{(p)}(h')^2=2A(\mathcal DA)h^2+2A^2h\,\mathcal Dh$. By Lemma~\ref{lem:isog} for $V$ the left side vanishes on the roots of $h$ and has degree at most $p-1$, so the identity amounts to
+By Proposition~\ref{prop:psi} the claim is $\Phi-4w^{(p)}(h')^2=2A(\mathcal DA)h^2+2A^2h\,\mathcal Dh$. By Lemma~\ref{lem:isog} for $V$ the left side vanishes on the roots of $h$, and it has degree at most $p-1$ since $4n_p^2\equiv1$; write it as $hC_1$. Differentiating and using the second identity of Lemma~\ref{lem:isog}, $C_1(\xi)=-2[w^{(p)}(h')^2]'(\xi)/h'(\xi)$ at each root $\xi$ of $h$. As $\deg C_1\le n_p$ and $h$ is monic of degree $n_p$, the identity amounts to
 \[
 \textup{(R)}\ \bigl[w^{(p)}(h')^2\bigr]'+A^2h'\,\mathcal Dh\equiv0\pmod h,\qquad \textup{(L)}\ [X^{p-1}]\bigl(\Phi-4w^{(p)}(h')^2\bigr)=2A\,\mathcal DA .
 \]
-Both sides are weight-homogeneous, and $q$-expansion is injective on each weight \cite{Ser73,SwD73}, so it suffices to check them on the Tate curve, where $A\equiv1$ and $V$ is the isogeny $E_{q^p}\to E_q$. With roots $\xi_i=X_Q(q^i)$, $\eta_i=Y_Q(q^i)$, $Q=q^p$: (a) $q\,d\xi_i/dq=2i\eta_i$, since $p\,Q\,\partial_Q=0$; (b) $H(W)=h(X_Q(W))=C'W^{n_p}\theta_q(W)\theta_Q(W)^{-p}$ by the product formula for $x_Q(W_1)-x_Q(W_2)$; (c) the logarithmic derivative of $H$ at $W=q^i$ has constant term $n_p+1-i$, which gives $\eta_i\,D^2H/DH=-2i\eta_i=\mathcal D\xi_i$, that is (R). For (L), the constant terms compare as $\phi_1+6\sigma$ with $\phi_1=-2\sigma$ and $\sigma=\sum\xi_i=-E_2/24$, while $2A\,\mathcal DA\equiv-E_2/6$.
+At a root $\xi_i$ of $h$, (R) reads $A^2\mathcal D\xi_i=w^{(p)\prime}(\xi_i)+4w^{(p)}(\xi_i)\sum_{j\ne i}(\xi_i-\xi_j)^{-1}$. Both sides of the claim are weight-homogeneous, and $q$-expansion is injective on each weight \cite{Ser73,SwD73}, so it suffices to check (R) and (L) on the Tate curve \cite[Ch.~V]{ATAEC}, where $A\equiv1$ and $V$ is the isogeny $E_{q^p}\to E_q$. Put $Q=q^p$, let $X_Q,Y_Q$ be the coordinates of $E_Q$ in the short model, so that $dX_Q/2Y_Q=dW/W$ and $Y_Q^2=w^{(p)}(X_Q)$, and let $\xi_i=X_Q(q^i)$, $\eta_i=Y_Q(q^i)$ for $1\le i\le n_p$.
+
+(a) Since $p\,Q\,\partial_Q=0$, $q\,d\xi_i/dq=2i\eta_i$; as $\xi_i$ has weight $2p$, $\mathcal D\xi_i=-2i\eta_i$.
+
+(b) The product formula for $x_Q(W_1)-x_Q(W_2)$ gives
+\[
+H(W)=h(X_Q(W))=C'W^{n_p}\theta_q(W)\theta_Q(W)^{-p},
+\]
+where $\theta_q(W)=(1-W)\prod_{m\ge1}(1-q^mW)(1-q^m/W)$.
+
+(c) With $D=W\,d/dW$, $DH/H=n_p+D\log\theta_q(W)$ in characteristic $p$. At $W=q^i(1+s)$ the term $m=i$ of $D\log\theta_q$ is $1/s$ and the other terms sum to $-(i-1)$ at $s=0$, so $DH/H=1/s+\kappa+O(s)$ with $\kappa=n_p+1-i$, and $D^2H/DH=2\kappa-1\equiv-2i$ at $W=q^i$. Since $DH=2Y_Q\,h'(X_Q)$ and $D^2H=4Y_Q^2h''(X_Q)+2h'(X_Q)\,w^{(p)\prime}(X_Q)$, multiplying by $\eta_i$ gives $w^{(p)\prime}(\xi_i)+4w^{(p)}(\xi_i)\sum_{j\ne i}(\xi_i-\xi_j)^{-1}=-2i\eta_i=\mathcal D\xi_i$, which is (R).
+
+For (L), the coefficient of $X^{p-1}$ is $\phi_1+6\sigma$, where $\phi_1=[X^{p-1}]\Phi$ and $\sigma=\sum_i\xi_i$. On the Tate curve $\Phi/h^2$ at $X_Q(W)$ is $X_q(W)$, and $X_q-X_Q\to0$ as $W\to1$, so $\phi_1+2\sigma=0$. Summing $X_Q$ over the kernel gives $2\sigma\equiv2s_1(q)-1/12$ with $s_1(q)=\sum_{n\ge1}\sigma_1(n)q^n$, so $\sigma=-E_2/24$. Finally $A$ has weight $p-1$ and $q$-expansion $1$, so $\mathcal DA\equiv-E_2/12$, and $\phi_1+6\sigma=4\sigma=-E_2/6=2A\,\mathcal DA$.
 \end{proof}
 
 \begin{theorem}\label{thm:ND}
@@ -435,14 +469,14 @@ For every prime $p\ge5$ there is $c_S\in\Fp^\times$ with
 \[
 \mathrm{Res}_x(S_1,\psi_p\bmod p)=c_S\,\Delta_0^{p^2(p^2-1)/24}\quad\text{in }\Fp[a_4,a_6].
 \]
-Hence $v_p(\phi_p'(x(T)))=1$ for every ordinary curve and every $T$ of order $p$, and $s(\bar x)\ne0$.
+Hence, by Lemma~\ref{lem:ND-S1}, $v_p(\phi_p'(x(T)))=1$ for every ordinary curve and every $T$ of order $p$, and $s(\bar x)\ne0$.
 \end{theorem}
 
 \begin{proof}
 By Proposition~\ref{prop:S1}, \[\mathrm{Res}_x(S_1,\psi_p)=\bigl(2^{n_p}\mathrm{Res}_X(\mathcal D\Psi,\Psi)\bigr)^p,\] and $\mathcal D\Psi(\xi_i)=-A(\mathcal D\xi_i)\prod_{j\ne i}(\xi_i-\xi_j)$. On the Tate curve, $\mathrm{ord}_q(\mathcal D\xi_i)=i$ and $\mathrm{ord}_q(\xi_i-\xi_j)=\min(i,j)$, so the resultant has $q$-order $M=p(p^2-1)/24$, which is one twelfth of its weight. As $\Delta_0$ is the only weight-homogeneous irreducible factor vanishing at the cusp, the resultant is $\gamma_p\Delta_0^M$ with $\gamma_p\ne0$; the leading coefficients give $\gamma_p=(-1)^{n_p(n_p+1)/2}\,n_p!\,(-16)^M$.
 \end{proof}
 
-[Computation: before this proof, the non-degeneracy had been verified for all curves over $\Fp$ with $p\le41$.] With $m_K=(p^2-1)(p^2-3)/24$ one also finds $\mathrm{Res}_x(K,\psi_p\bmod p)=\varepsilon_p2^{m_K}\Delta_0^{m_K}$ with $\varepsilon_p=-1$ exactly when $p\equiv3\pmod8$.
+[Computation: before this proof, the non-degeneracy had been verified for all curves over $\Fp$ with $p\le41$.] With $m_K=(p^2-1)(p^2-3)/24$ one also finds $\mathrm{Res}_x(K,\psi_p\bmod p)=\varepsilon_p2^{m_K}\Delta_0^{m_K}$ with $\varepsilon_p=-1$ exactly when $p\equiv3\pmod8$ \cite[Prop.~16]{Draft}; this is not used here.
 
 \section{An archimedean threshold}\label{sec:arch}
 
@@ -486,13 +520,13 @@ Under \textup{(H)}, $E(\Qp)/E_2(\Qp)\cong(\Z/p)^2$, and $(\chi,\gamma)$ fails to
 $E(\Qp)=D\oplus E_1(\Qp)$ and $E_1/E_2\cong\Z/p$. The image of $\Lam$ has order $p\cdot\#(\text{image of }\Lam\cap E_1)$, and the second factor is trivial exactly when $\Lam\cap E_1\subseteq E_2$.
 \end{proof}
 
-[Computation.] Over $3{,}056$ split boxes of rank two from Cremona's tables, Proposition~\ref{prop:naive} accounts for about $68\%$ of the observed deficit in the frequency of $\det(\chi,\gamma)\equiv0$ relative to $1/p$, and Proposition~\ref{prop:canonical} for $100.6\%$ in expectation; on a disjoint set of $5{,}572$ boxes (conductor between $200{,}000$ and $500{,}000$) the figures are $55.8\%$ and $99.7\%$. No box with $\det(\chi,\gamma)\equiv0$ lies below the canonical threshold, in these sets or in two further sets of $5{,}782$ and $7{,}861$ boxes outside Cremona's tables. Above the threshold the frequency is $1/p$ within the noise on the first two sets; on the last two the non-surjective boxes cluster just above the threshold, for a reason we do not know. The constant $m_\infty$ was computed numerically.
+[Computation.] Over $3{,}056$ split boxes of rank two from Cremona's tables, Proposition~\ref{prop:naive} accounts for about $68\%$ of the observed deficit in the frequency of $\det(\chi,\gamma)\equiv0$ relative to $1/p$, and Proposition~\ref{prop:canonical} for $100.6\%$ in expectation; on a disjoint set of $5{,}572$ boxes (conductor between $200{,}000$ and $500{,}000$) the figures are $55.8\%$ and $99.7\%$. No box with $\det(\chi,\gamma)\equiv0$ lies below the canonical threshold, in these sets or in two further sets of $5{,}782$ and $7{,}861$ boxes outside Cremona's tables (rank-two curves $y^2=x^3+Ax+B$ through two small points, or with random small $A,B$; generators saturated at the primes up to $200$, assumed to suffice). Above the threshold the frequency is $1/p$ within the noise on the first two sets; on the last two the non-surjective boxes cluster just above the threshold, for a reason we do not know. The constant $m_\infty$ was computed numerically.
 
 \section{Open questions}\label{sec:open}
 
 \begin{enumerate}[label=(\arabic*)]
 \item Is $\det\widehat C$ in Corollary~\ref{cor:K}(iii) governed by any local datum? It is a non-degeneracy of the same kind as Schneider's conjecture.
-\item Find a sharp lower bound for $v_p(\mu_{2m})$, which would determine the digit of every local invariant.
+\item Is the lower bound for $v_p(\mu_{2m})$ in Proposition~\ref{prop:mu} sharp? A sharp bound would determine the earliest digit of every local invariant.
 \item Explain the frequency $1/p$ of $\det(\chi,\gamma)\equiv0$ above the canonical threshold, and the clustering just above it.
 \item [Computation] For every anomalous curve over $\Fp$ with $p\le157$, the slope $\rho$ of \cite[App.~A]{P1} satisfies $(\rho/p)=(-3/p)$. Is there a closed form?
 \end{enumerate}
@@ -501,7 +535,7 @@ $E(\Qp)=D\oplus E_1(\Qp)$ and $E_1/E_2\cong\Z/p$. The image of $\Lam$ has order 
 
 \section{Lean formalisation}\label{app:lean}
 
-The Lean project for this paper has $25$ files, each importing only Mathlib (Lean~4 \texttt{v4.33.1}, Mathlib \texttt{0df444a3}), with no \texttt{sorry} or \texttt{native\_decide}; all \texttt{\#print axioms} lines are subsets of \{\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}\}. Sources and axiom logs: \url{https://github.com/yoshikazuhosomura-sys/padic-height-anomalous}, doi:10.5281/zenodo.23856616. Lean checks the arithmetic steps; the $p$-adic sigma function, division polynomials, formal groups, the Tate curve and local heights enter as hypotheses. File $k$ is \texttt{PadicHeightValuation}$k$\texttt{.lean}.
+The Lean project for this paper has $25$ files, each importing only Mathlib (Lean~4 \texttt{v4.33.1}, Mathlib \texttt{0df444a3}), with no \texttt{sorry} or \texttt{native\_decide}; all \texttt{\#print axioms} lines are subsets of \{\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}\}. Sources and axiom logs: \url{https://github.com/yoshikazuhosomura-sys/padic-height-anomalous}, doi:10.5281/zenodo.23856616. Lean checks the arithmetic steps; the $p$-adic sigma function, division polynomials, formal groups, the Tate curve and local heights enter as hypotheses. For instance, the identity of Lemma~\ref{lem:ND-S1} is a hypothesis of \lean{nd_iff_S_ne_zero}. File $k$ is \texttt{PadicHeightValuation}$k$\texttt{.lean}.
 
 \begin{center}\small
 \begin{longtable}{p{0.28\linewidth}p{0.54\linewidth}p{0.08\linewidth}}
@@ -515,7 +549,9 @@ Cor.~\ref{cor:Nprime} & \lean{trichotomy}, \lean{sq_dvd_sub_crit} & 14\\
 Cor.~\ref{cor:N34}, \ref{cor:criteria} & \lean{denominator_third_digit}, \lean{q2_quotient}, \lean{cube_dvd_iff_crit}, \lean{denominator_fourth_digit}, \lean{quartic_dvd_iff_crit}, \lean{quintichotomy} & 15, 16\\
 Prop.~\ref{prop:layer} & \lean{p_mult_second_digit}, \lean{w_local}, \lean{layer_depth} & 16, 23\\
 Thm.~\ref{thm:Gprime} & \lean{shift_depth_exact}, \lean{unit_pow_diff_exact}, \lean{theta_sensitivity_exact} & 17\\
-Thm.~\ref{thm:ND} & \lean{resultant_weight}, \lean{nondegeneracy_summary}, \lean{nd_iff_S_ne_zero} & 18, 19\\
+Lemmas~\ref{lem:isog}, \ref{lem:ND-S1} & \lean{isogeny_A1_domain}, \lean{isogeny_A2}, \lean{deriv_eval_of_factor}, \lean{nd_iff_S_ne_zero} & 18, 20\\
+Prop.~\ref{prop:S1} & \lean{residue_iff}, \lean{log_deriv_ratio}, \lean{telescope_sum} & 20, 21\\
+Thm.~\ref{thm:ND} & \lean{resultant_weight}, \lean{nondegeneracy_summary} & 18, 19\\
 Prop.~\ref{prop:mu}, \ref{prop:digits} & \lean{mu2_eq}, \lean{mu4_eq}, \lean{mu6_eq}, \lean{mu6_no_b2_cube}, \lean{log_term_factor}, \lean{mu6_visible_at_ten} & 22, 23\\
 Prop.~\ref{prop:rates}, Thm.~\ref{thm:Gk} & \lean{ledger_lags}, \lean{ledger_lags_any_m}, \lean{data_count}, \lean{layer_is_needed}, \lean{fermat_digits_needed} & 24, 25\\
 Lemma~\ref{lem:depthheight}, Prop.~\ref{prop:naive} & \lean{height_ge_of_depth}, \lean{surjective_of_shallow_kernel_element} & 27\\
@@ -551,7 +587,10 @@ Cor.~\ref{cor:N34} & Cors.~N$^{(3)}$, N$^{(4)}$ & Lemma~\ref{lem:imageE2} & Lemm
 This research was carried out with the assistance of Claude Code (Anthropic). The constructions, proofs, computations and the Lean formalisation were developed with the AI system under the author's direction, and separate sessions of the system re-checked the Lean development and the computations. The author reviewed the arguments, checked the Lean development and its axiom logs, and takes full responsibility for the content.
 
 \begin{thebibliography}{SwD73}
-\bibitem[Draft]{Draft} Y.~Hosomura (under the name Kiichi), \emph{Integrality of the $p$-adic height pairing at an anomalous prime is equivalent to a point of order $p$ in $E(\Qp)$}, draft v15, computo ergo sum, 2026.
+\bibitem[ATAEC]{ATAEC} J.~H. Silverman, \emph{Advanced Topics in the Arithmetic of Elliptic Curves}, Grad. Texts in Math.~151, Springer, 1994.
+\bibitem[BG]{BG} C.~Blakestad, D.~Grant, \emph{On the universal $p$-adic sigma and Weierstrass zeta functions}, arXiv:1903.02480.
+\bibitem[Draft]{Draft} Y.~Hosomura (under the name Kiichi), \emph{Integrality of the $p$-adic height pairing at an anomalous prime is equivalent to a point of order $p$ in $E(\Qp)$}, draft v15, computo ergo sum, 2026, doi:10.5281/zenodo.23296340.
+\bibitem[Kat73]{Kat73} N.~Katz, \emph{$p$-adic properties of modular schemes and modular forms}, in: Modular Functions of One Variable III, Lecture Notes in Math.~350, Springer, 1973, 69--190.
 \bibitem[MT91]{MT91} B.~Mazur, J.~Tate, \emph{The $p$-adic sigma function}, Duke Math. J. 62 (1991), 663--688.
 \bibitem[P1]{P1} Y.~Hosomura, \emph{The $p$-adic height pairing at anomalous primes and points of order $p$ over $\Qp$}, 2026.
 \bibitem[Ser73]{Ser73} J.-P. Serre, \emph{Formes modulaires et fonctions zêta $p$-adiques}, Lecture Notes in Math.~350, Springer, 1973, 191--268.
